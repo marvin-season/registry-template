@@ -2,7 +2,6 @@
 
 This is a template for creating a custom registry using Next.js.
 
-
 ## How to use
 
 ```sh
