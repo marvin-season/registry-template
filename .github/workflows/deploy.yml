@@ -9,19 +9,24 @@ on:
 
 jobs:
   build:
-    name: Build Docusaurus
-    runs-on: ubuntu-latest
+    name: Build Shadcn Registry
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        node-version: [20]
     steps:
       - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
         with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v4
+          version: 10
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
-          cache: pnpm
-
+          node-version: ${{ matrix.node-version }}
+          cache: "pnpm"
       - name: Install dependencies
-        run: pnpm i
+        run: pnpm install
 
       - name: Build website
         run: pnpm build
