@@ -1,5 +1,7 @@
 # registry-template
 
+
+
 You can use the `shadcn` CLI to run your own component registry. Running your own
 component registry allows you to distribute your custom components, hooks, pages, and
 other files to any React project.
