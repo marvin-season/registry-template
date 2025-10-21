@@ -3,7 +3,6 @@ import { defineDocs, defineConfig, metaSchema, frontmatterSchema } from "fumadoc
 import z from "zod";
 var docsSchema = frontmatterSchema.extend({
   author: z.string(),
-  figma: z.url().optional(),
   timeline: z.boolean().optional().default(true),
   gitCommitLogs: z.array(
     z.object({
@@ -15,7 +14,12 @@ var docsSchema = frontmatterSchema.extend({
   ).optional()
 });
 var docs = defineDocs({
-  dir: "content/docs"
+  docs: {
+    schema: docsSchema
+  },
+  meta: {
+    schema: metaSchema
+  }
 });
 var registry = defineDocs({
   dir: "registry",

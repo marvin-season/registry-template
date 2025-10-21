@@ -3,7 +3,6 @@ import z from 'zod';
 
 const docsSchema = frontmatterSchema.extend({
   author: z.string(),
-  figma: z.url().optional(),
   timeline: z.boolean().optional().default(true),
   gitCommitLogs: z
     .array(
@@ -17,8 +16,13 @@ const docsSchema = frontmatterSchema.extend({
     .optional(),
 })
 export const docs = defineDocs({
-  dir: 'content/docs',
-});
+  docs: {
+    schema: docsSchema,
+  },
+  meta: {
+    schema: metaSchema,
+  },
+})
 
 export const registry = defineDocs({
   dir: 'registry',
