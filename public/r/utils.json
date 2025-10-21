@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "utils",
+  "type": "registry:lib",
+  "title": "Utils",
+  "description": "A library to utils functions",
+  "files": [
+    {
+      "path": "registry/utils/index.ts",
+      "content": "export async function sleep(ms: number) {\n  return new Promise((resolve) => setTimeout(resolve, ms));\n}",
+      "type": "registry:lib"
+    }
+  ]
+}

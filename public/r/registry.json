@@ -4,6 +4,18 @@
   "homepage": "https://acme.com",
   "items": [
     {
+      "name": "utils",
+      "type": "registry:lib",
+      "title": "Utils",
+      "description": "A library to utils functions",
+      "files": [
+        {
+          "path": "registry/utils/index.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
       "name": "use-mobile",
       "type": "registry:hook",
       "title": "Use Mobile",

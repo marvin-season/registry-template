@@ -4,13 +4,13 @@
   "homepage": "https://acme.com",
   "items": [
     {
-      "name": "sleep",
+      "name": "utils",
       "type": "registry:lib",
-      "title": "Sleep",
-      "description": "A library to sleep for a given number of milliseconds",
+      "title": "Utils",
+      "description": "A library to utils functions",
       "files": [
         {
-          "path": "registry/utils/sleep.ts",
+          "path": "registry/utils/index.ts",
           "type": "registry:lib"
         }
       ]
