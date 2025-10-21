@@ -52,8 +52,8 @@ importers:
         specifier: ^1.3.6
         version: 1.3.6
       zod:
-        specifier: ^3.25.76
-        version: 3.25.76
+        specifier: ^4.1.12
+        version: 4.1.12
     devDependencies:
       '@eslint/eslintrc':
         specifier: ^3.3.1
