@@ -4,6 +4,18 @@
   "homepage": "https://acme.com",
   "items": [
     {
+      "name": "sleep",
+      "type": "registry:lib",
+      "title": "Sleep",
+      "description": "A library to sleep for a given number of milliseconds",
+      "files": [
+        {
+          "path": "registry/utils/sleep.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
       "name": "use-mobile",
       "type": "registry:hook",
       "title": "Use Mobile",
