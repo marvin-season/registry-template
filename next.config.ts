@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { createMDX } from 'fumadocs-mdx/next';
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -12,7 +13,12 @@ const options: NextConfig = isProduction ? {
 } : {};
 
 const nextConfig: NextConfig = {
-  ...options
+  reactStrictMode: true,
+  ...options,
 };
 
-export default nextConfig;
+
+const withMDX = createMDX({
+
+});
+export default withMDX(nextConfig);
