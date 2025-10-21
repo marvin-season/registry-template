@@ -22,7 +22,7 @@
       "description": "A hook to check if the user is on a mobile device",
       "files": [
         {
-          "path": "registry/hooks/use-mobile.ts",
+          "path": "registry/hooks/use-mobile/index.ts",
           "type": "registry:hook"
         }
       ]
