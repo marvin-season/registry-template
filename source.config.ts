@@ -1,4 +1,5 @@
-import { registrySourceCodePlugin } from '@/plugin/remark/registrySourceCodePlugin';
+
+import { remarkInstall } from './plugin/remark/remarkInstall';
 import { remarkNpm } from 'fumadocs-core/mdx-plugins';
 import { defineDocs, defineConfig, metaSchema, frontmatterSchema,  } from 'fumadocs-mdx/config';
 import z from 'zod';
@@ -39,8 +40,8 @@ export const registry = defineDocs({
 export default defineConfig({
   mdxOptions: {
     remarkPlugins: [
-      registrySourceCodePlugin,
-      remarkNpm
+      remarkInstall,
+      [remarkNpm, { persist: { id: 'package-manager' } }],
     ],
   },
 });

@@ -1,26 +1,23 @@
-// plugin/remark/registrySourceCodePlugin.ts
-import { readFileSync } from "node:fs";
-import path from "node:path";
-import { globSync } from "glob";
+// plugin/remark/remarkInstall.ts
 import { map } from "unist-util-map";
-var registryPath = path.join(process.cwd(), "src/registry");
-function registrySourceCodePlugin() {
+function remarkInstall() {
   return (tree) => {
-    map(tree, (node) => {
-      if (node.type !== "mdxJsxFlowElement" || node.name !== "RegistrySourceCode")
-        return node;
-      const attrValue = node.attributes[0].value;
-      const files = globSync(`${registryPath}/**/${attrValue}/index.{ts,tsx}`);
-      const file = files[0];
-      if (!file) return node;
-      const ext = file.split(".").pop();
-      const content = readFileSync(file, "utf-8");
-      Object.assign(node, {
-        type: "code",
-        lang: ext ?? "ts",
-        meta: `title="${attrValue}.${ext}"`,
-        value: content
-      });
+    map(tree, (node, index, parent) => {
+      if (node.type === "code" && node.lang === "package-add") {
+        const attrValue = node.value;
+        const value = `npx shadcn@latest add "https://marvin-season.github.io/registry-template//r/${attrValue}.json"`;
+        parent?.children.splice(index ?? 0, 0, {
+          type: "code",
+          lang: "bash",
+          meta: `title="shadcn"`,
+          value
+        });
+        Object.assign(node, {
+          type: "code",
+          lang: "ts",
+          value
+        });
+      }
       return node;
     });
   };
@@ -62,8 +59,8 @@ var registry = defineDocs({
 var source_config_default = defineConfig({
   mdxOptions: {
     remarkPlugins: [
-      registrySourceCodePlugin,
-      remarkNpm
+      remarkInstall,
+      [remarkNpm, { persist: { id: "package-manager" } }]
     ]
   }
 });
