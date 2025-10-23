@@ -7,17 +7,13 @@ export function remarkInstall(): Transformer<Root, Root> {
     map(tree, (node, index, parent) => {
       if (node.type === 'code' && node.lang === 'package-add') {
         const attrValue = node.value
-        const value = `npx shadcn@latest add "https://marvin-season.github.io/registry-template//r/${attrValue}.json"`
-        parent?.children.splice(index ?? 0, 0, {
-          type: 'code',
-          lang: 'bash',
-          meta: `title=\"shadcn\"`,
-          value,
-        })
+        const value = `npx shadcn@latest add "https://marvin-season.github.io/registry-template/r/${attrValue}.json"`
+
   
         Object.assign(node, {
           type: 'code',
           lang: 'ts',
+          meta: `title=\"shadcn\"`,
           value,
         })
       }
