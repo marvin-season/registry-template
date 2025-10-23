@@ -1,25 +1,4 @@
-// plugin/remark/remarkInstall.ts
-import { map } from "unist-util-map";
-function remarkInstall() {
-  return (tree) => {
-    map(tree, (node, index, parent) => {
-      if (node.type === "code" && node.lang === "package-add") {
-        const attrValue = node.value;
-        const value = `npx shadcn@latest add "https://marvin-season.github.io/registry-template/r/${attrValue}.json"`;
-        Object.assign(node, {
-          type: "code",
-          lang: "ts",
-          meta: `title="shadcn"`,
-          value
-        });
-      }
-      return node;
-    });
-  };
-}
-
 // source.config.ts
-import { remarkNpm } from "fumadocs-core/mdx-plugins";
 import { defineDocs, defineConfig, metaSchema, frontmatterSchema } from "fumadocs-mdx/config";
 import z from "zod";
 var docsSchema = frontmatterSchema.extend({
@@ -53,10 +32,7 @@ var registry = defineDocs({
 });
 var source_config_default = defineConfig({
   mdxOptions: {
-    remarkPlugins: [
-      remarkInstall,
-      [remarkNpm, { persist: { id: "package-manager" } }]
-    ]
+    remarkPlugins: []
   }
 });
 export {

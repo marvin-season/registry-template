@@ -10,30 +10,15 @@ import { App } from "./demo";
 
 一个基于 Zod 验证的智能表单组件，支持自动字段生成、类型安全验证和自定义组件渲染。
 
-<App />
-
 ## 安装
 
-```package-add
-zod-form
-```
+<InstallCommand pkgName="zod-form" />
 
-## 基本用法
+## 预览
 
-```tsx
-import { ZodForm } from "@/registry/new-york/blocks/zod-form";
-import { z } from "zod";
-
-const schema = z.object({
-  name: z.string().min(1, "姓名不能为空"),
-  email: z.string().email("请输入有效的邮箱地址"),
-  age: z.number().min(18, "年龄必须大于18岁"),
-});
-
-function MyForm() {
-  return <ZodForm schema={schema} onSubmit={(data) => console.log(data)} />;
-}
-```
+<PreviewCode pkgName="zod-form">
+  <App />
+</PreviewCode>
 
 ## API 参考
 
@@ -163,130 +148,3 @@ function UserRegistrationForm() {
   <ZodFormSubmit>提交</ZodFormSubmit>
 </ZodFormFooter>
 ```
-
-## 自定义组件
-
-### 定义自定义字段组件
-
-```tsx
-import {
-  defineComponents,
-  type NativeComponent,
-} from "@/registry/new-york/blocks/zod-form";
-
-const CustomTextarea: NativeComponent<string> = ({
-  name,
-  value,
-  onChange,
-  label,
-  error,
-  isRequired,
-  placeholder,
-}) => {
-  return (
-    <div className="space-y-2">
-      <label htmlFor={name} className="block text-sm font-medium">
-        {label} {isRequired && <span className="text-red-500">*</span>}
-      </label>
-      <textarea
-        id={name}
-        name={name}
-        value={value || ""}
-        onChange={(e) => onChange?.(e.target.value)}
-        placeholder={placeholder}
-        className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
-        aria-invalid={!!error}
-      />
-      {error && <p className="text-red-500 text-sm">{error}</p>}
-    </div>
-  );
-};
-
-const customComponents = defineComponents({
-  textarea: CustomTextarea,
-  string: CustomTextarea, // 覆盖默认的字符串组件
-});
-```
-
-### 使用自定义组件
-
-```tsx
-<ZodForm
-  schema={schema}
-  onSubmit={handleSubmit}
-  components={customComponents}
-/>
-```
-
-## 高级用法
-
-### 条件字段
-
-```tsx
-const conditionalSchema = z
-  .object({
-    hasPhone: z.boolean(),
-    phone: z.string().optional(),
-  })
-  .refine(
-    (data) => {
-      if (data.hasPhone && !data.phone) {
-        return false;
-      }
-      return true;
-    },
-    {
-      message: "请填写电话号码",
-      path: ["phone"],
-    },
-  );
-```
-
-### 动态验证
-
-```tsx
-const dynamicSchema = z
-  .object({
-    password: z.string().min(8),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "密码不匹配",
-    path: ["confirmPassword"],
-  });
-```
-
-### 自定义字段渲染
-
-```tsx
-<ZodForm
-  schema={schema}
-  onSubmit={handleSubmit}
-  renderFields={(props) => {
-    if (props.name === "specialField") {
-      return <CustomSpecialField {...props} />;
-    }
-    return <ZodField {...props} />;
-  }}
-/>
-```
-
-## 最佳实践
-
-1. **Schema 设计**: 使用描述性的错误消息，提供良好的用户体验
-2. **组件复用**: 通过 `defineComponents` 创建可复用的字段组件
-3. **性能优化**: 对于大型表单，考虑使用 `React.memo` 优化字段组件
-4. **无障碍性**: 确保自定义组件支持适当的 ARIA 属性
-
-## 故障排除
-
-### 常见问题
-
-**Q: 字段不显示？**
-A: 检查 schema 是否正确配置，确保字段类型被支持。
-
-**Q: 验证不工作？**
-A: 确保 Zod schema 配置正确，检查错误处理逻辑。
-
-**Q: 自定义组件不生效？**
-A: 确保组件映射正确，组件类型与 schema 中的类型匹配。
