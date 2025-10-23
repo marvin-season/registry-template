@@ -105,7 +105,7 @@
       "title": "Zod Form",
       "description": "A form component that uses Zod for validation with automatic field generation and type-safe validation.",
       "dependencies": ["zod"],
-      "registryDependencies": ["button"],
+      "registryDependencies": ["button", "input"],
       "files": [
         {
           "path": "registry/new-york/blocks/zod-form/zod-form.tsx",

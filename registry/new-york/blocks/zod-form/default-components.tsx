@@ -2,6 +2,7 @@ import { useMemo, type FC, type InputHTMLAttributes } from "react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/registry/new-york/ui/button";
+import { Input } from "@/registry/new-york/ui/input";
 export type TFieldJSONSchema = {
   component?: string;
   placeholder?: string;
@@ -51,7 +52,7 @@ export const NativeInput: FC<INativeInputProps<string | number>> = ({
       <label htmlFor={name}>
         {label}: {isRequired && <span>*</span>}
       </label>
-      <input
+      <Input
         type={isNumberInput ? "number" : "text"}
         name={name}
         value={value ?? ""}
@@ -81,6 +82,7 @@ export function defineComponents<T extends TComponentMap>(components: T) {
 export const defaultComponents = defineComponents({
   // 类型级别的映射
   string: NativeInput,
+  number: NativeInput,
 });
 
 export type ButtonProps = React.ComponentProps<typeof Button>;

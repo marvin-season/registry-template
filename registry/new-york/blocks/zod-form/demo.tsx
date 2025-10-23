@@ -7,18 +7,15 @@ import {
   ZodFormSubmit,
 } from "./default-components";
 import { z } from "zod";
-
+const schema = z.object({
+  name: z.string().min(1, "姓名不能为空"),
+  email: z.email("请输入有效的邮箱地址"),
+  age: z.number().min(18, "年龄必须大于18岁"),
+});
 export const App = () => {
   return (
     <div>
-      <ZodForm
-        schema={z.object({
-          name: z.string().min(1),
-          email: z.email(),
-          message: z.string().min(1),
-        })}
-        onSubmit={console.log}
-      >
+      <ZodForm schema={schema} onSubmit={console.log}>
         <ZodFormFooter>
           <ZodFormSubmit>Submit</ZodFormSubmit>
           <ZodFormReset variant={"destructive"}>Reset</ZodFormReset>
