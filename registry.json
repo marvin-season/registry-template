@@ -109,15 +109,18 @@
       "files": [
         {
           "path": "registry/new-york/blocks/zod-form/zod-form.tsx",
-          "type": "registry:component"
+          "type": "registry:component",
+          "target": "components/zod-form/zod-form.tsx"
         },
         {
           "path": "registry/new-york/blocks/zod-form/zod-field.tsx",
-          "type": "registry:component"
+          "type": "registry:component",
+          "target": "components/zod-form/zod-field.tsx"
         },
         {
           "path": "registry/new-york/blocks/zod-form/default-components.tsx",
-          "type": "registry:component"
+          "type": "registry:component",
+          "target": "components/zod-form/default-components.tsx"
         }
       ]
     }
