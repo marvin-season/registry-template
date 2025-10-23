@@ -9,8 +9,9 @@ export function PreviewCode(props: {
 }) {
   const { pkgName, children } = props;
 
-  const files = globSync(process.cwd() + "/**/" + pkgName + "/*.{ts,tsx}");
-  console.log(files);
+  const files = globSync(
+    `${process.cwd()}/registry/{hooks,new-york,components,utils}/**/${pkgName}/*.{ts,tsx}`,
+  );
 
   const codes = useMemo(() => {
     return files.map((file) => {
@@ -28,6 +29,9 @@ export function PreviewCode(props: {
   }, [codes]);
 
   const sourceCodeTabs = useMemo(() => {
+    if (codes.length === 0) {
+      return <div>No source code found</div>;
+    }
     return (
       <Tabs items={codeTitles}>
         {codes.map((code) => {
@@ -44,7 +48,7 @@ export function PreviewCode(props: {
   return (
     <Tabs items={["Preview", "Source Code"]}>
       <Tab>{children}</Tab>
-      <Tab className="px-0">{sourceCodeTabs}</Tab>
+      <Tab className="p-0">{sourceCodeTabs}</Tab>
     </Tabs>
   );
 }
