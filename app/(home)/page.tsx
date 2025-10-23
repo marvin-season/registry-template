@@ -8,7 +8,6 @@ export default function HomePage() {
   return (
     <main className="flex flex-1 flex-col justify-center text-center">
       <h1 className="mb-4 text-2xl font-bold">
-        <span className={"text-gray-600"}>Powered by </span>
         <Link
           target="_blank"
           href="https://fumadocs.dev"
