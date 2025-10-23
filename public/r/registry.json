@@ -98,6 +98,28 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "zod-form",
+      "type": "registry:component",
+      "title": "Zod Form",
+      "description": "A form component that uses Zod for validation with automatic field generation and type-safe validation.",
+      "dependencies": ["zod"],
+      "registryDependencies": ["button"],
+      "files": [
+        {
+          "path": "registry/new-york/blocks/zod-form/zod-form.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/new-york/blocks/zod-form/zod-field.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/new-york/blocks/zod-form/default-components.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }

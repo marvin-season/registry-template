@@ -1,0 +1,292 @@
+---
+title: Zod Form
+author: Marvin
+description: A form component that uses Zod for validation.
+---
+
+import { App } from "./demo";
+
+# Zod Form
+
+一个基于 Zod 验证的智能表单组件，支持自动字段生成、类型安全验证和自定义组件渲染。
+
+<App />
+
+## 安装
+
+```bash
+pnpm dlx shadcn@latest add https://marvin-season.github.io/registry/r/zod-form.json
+```
+
+## 基本用法
+
+```tsx
+import { ZodForm } from "@/registry/new-york/blocks/zod-form";
+import { z } from "zod";
+
+const schema = z.object({
+  name: z.string().min(1, "姓名不能为空"),
+  email: z.string().email("请输入有效的邮箱地址"),
+  age: z.number().min(18, "年龄必须大于18岁"),
+});
+
+function MyForm() {
+  return <ZodForm schema={schema} onSubmit={(data) => console.log(data)} />;
+}
+```
+
+## API 参考
+
+### ZodForm
+
+主要的表单组件，基于 Zod schema 自动生成表单字段。
+
+#### Props
+
+| 属性             | 类型                                        | 默认值 | 描述                                              |
+| ---------------- | ------------------------------------------- | ------ | ------------------------------------------------- |
+| `schema`         | `ZodObject<Record<string, ZodTypeAny>>`     | -      | **必需**。Zod schema 对象，定义表单结构和验证规则 |
+| `onSubmit`       | `(data: z.infer<T>) => void`                | -      | **必需**。表单提交时的回调函数                    |
+| `defaultValues`  | `Partial<z.infer<T>>`                       | `{}`   | 表单的默认值                                      |
+| `components`     | `TComponentMap`                             | `{}`   | 自定义组件映射，用于覆盖默认的字段组件            |
+| `className`      | `string`                                    | `""`   | 表单容器的 CSS 类名                               |
+| `fieldClassName` | `string`                                    | `""`   | 字段容器的 CSS 类名                               |
+| `children`       | `React.ReactNode`                           | -      | 表单子元素，通常用于添加提交按钮等                |
+| `renderFields`   | `(props: ZodFieldProps) => React.ReactNode` | -      | 自定义字段渲染函数                                |
+
+#### 示例
+
+```tsx
+import {
+  ZodForm,
+  ZodFormFooter,
+  ZodFormSubmit,
+  ZodFormReset,
+} from "@/registry/new-york/blocks/zod-form";
+import { z } from "zod";
+
+const userSchema = z
+  .object({
+    username: z.string().min(3, "用户名至少3个字符"),
+    email: z.string().email("请输入有效邮箱"),
+    password: z.string().min(8, "密码至少8个字符"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "密码不匹配",
+    path: ["confirmPassword"],
+  });
+
+function UserRegistrationForm() {
+  const handleSubmit = (data) => {
+    console.log("用户数据:", data);
+    // 处理注册逻辑
+  };
+
+  return (
+    <ZodForm
+      schema={userSchema}
+      onSubmit={handleSubmit}
+      defaultValues={{
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      }}
+      className="max-w-md mx-auto"
+    >
+      <ZodFormFooter>
+        <ZodFormSubmit>注册</ZodFormSubmit>
+        <ZodFormReset variant="outline">重置</ZodFormReset>
+      </ZodFormFooter>
+    </ZodForm>
+  );
+}
+```
+
+### ZodField
+
+单个表单字段组件，负责渲染特定类型的输入控件。
+
+#### Props
+
+| 属性              | 类型                                             | 默认值  | 描述                              |
+| ----------------- | ------------------------------------------------ | ------- | --------------------------------- |
+| `name`            | `string`                                         | -       | **必需**。字段名称                |
+| `fieldJsonSchema` | `TFieldJSONSchema`                               | -       | **必需**。字段的 JSON Schema 配置 |
+| `components`      | `TComponentMap`                                  | -       | **必需**。组件映射                |
+| `value`           | `any`                                            | -       | 字段值                            |
+| `error`           | `string`                                         | -       | 错误信息                          |
+| `isRequired`      | `boolean`                                        | `false` | 是否为必填字段                    |
+| `updateField`     | `(name: string, value: any) => void`             | -       | **必需**。更新字段值的函数        |
+| `onValidate`      | `(name: string, value: any) => Promise<boolean>` | -       | **必需**。字段验证函数            |
+| `className`       | `string`                                         | -       | 字段容器的 CSS 类名               |
+
+#### 字段配置 (TFieldJSONSchema)
+
+| 属性          | 类型     | 描述                                  |
+| ------------- | -------- | ------------------------------------- |
+| `component`   | `string` | 指定使用的组件类型                    |
+| `type`        | `string` | 字段类型 (string, number, boolean 等) |
+| `label`       | `string` | 字段标签                              |
+| `description` | `string` | 字段描述                              |
+| `placeholder` | `string` | 占位符文本                            |
+| `default`     | `any`    | 默认值                                |
+
+### 辅助组件
+
+#### ZodFormSubmit
+
+表单提交按钮组件。
+
+```tsx
+<ZodFormSubmit>提交</ZodFormSubmit>
+<ZodFormSubmit variant="destructive" size="lg">删除</ZodFormSubmit>
+```
+
+#### ZodFormReset
+
+表单重置按钮组件。
+
+```tsx
+<ZodFormReset>重置</ZodFormReset>
+<ZodFormReset variant="outline">清空</ZodFormReset>
+```
+
+#### ZodFormFooter
+
+表单底部容器组件，用于包装提交和重置按钮。
+
+```tsx
+<ZodFormFooter className="flex justify-between">
+  <ZodFormReset>重置</ZodFormReset>
+  <ZodFormSubmit>提交</ZodFormSubmit>
+</ZodFormFooter>
+```
+
+## 自定义组件
+
+### 定义自定义字段组件
+
+```tsx
+import {
+  defineComponents,
+  type NativeComponent,
+} from "@/registry/new-york/blocks/zod-form";
+
+const CustomTextarea: NativeComponent<string> = ({
+  name,
+  value,
+  onChange,
+  label,
+  error,
+  isRequired,
+  placeholder,
+}) => {
+  return (
+    <div className="space-y-2">
+      <label htmlFor={name} className="block text-sm font-medium">
+        {label} {isRequired && <span className="text-red-500">*</span>}
+      </label>
+      <textarea
+        id={name}
+        name={name}
+        value={value || ""}
+        onChange={(e) => onChange?.(e.target.value)}
+        placeholder={placeholder}
+        className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+        aria-invalid={!!error}
+      />
+      {error && <p className="text-red-500 text-sm">{error}</p>}
+    </div>
+  );
+};
+
+const customComponents = defineComponents({
+  textarea: CustomTextarea,
+  string: CustomTextarea, // 覆盖默认的字符串组件
+});
+```
+
+### 使用自定义组件
+
+```tsx
+<ZodForm
+  schema={schema}
+  onSubmit={handleSubmit}
+  components={customComponents}
+/>
+```
+
+## 高级用法
+
+### 条件字段
+
+```tsx
+const conditionalSchema = z
+  .object({
+    hasPhone: z.boolean(),
+    phone: z.string().optional(),
+  })
+  .refine(
+    (data) => {
+      if (data.hasPhone && !data.phone) {
+        return false;
+      }
+      return true;
+    },
+    {
+      message: "请填写电话号码",
+      path: ["phone"],
+    },
+  );
+```
+
+### 动态验证
+
+```tsx
+const dynamicSchema = z
+  .object({
+    password: z.string().min(8),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "密码不匹配",
+    path: ["confirmPassword"],
+  });
+```
+
+### 自定义字段渲染
+
+```tsx
+<ZodForm
+  schema={schema}
+  onSubmit={handleSubmit}
+  renderFields={(props) => {
+    if (props.name === "specialField") {
+      return <CustomSpecialField {...props} />;
+    }
+    return <ZodField {...props} />;
+  }}
+/>
+```
+
+## 最佳实践
+
+1. **Schema 设计**: 使用描述性的错误消息，提供良好的用户体验
+2. **组件复用**: 通过 `defineComponents` 创建可复用的字段组件
+3. **性能优化**: 对于大型表单，考虑使用 `React.memo` 优化字段组件
+4. **无障碍性**: 确保自定义组件支持适当的 ARIA 属性
+
+## 故障排除
+
+### 常见问题
+
+**Q: 字段不显示？**
+A: 检查 schema 是否正确配置，确保字段类型被支持。
+
+**Q: 验证不工作？**
+A: 确保 Zod schema 配置正确，检查错误处理逻辑。
+
+**Q: 自定义组件不生效？**
+A: 确保组件映射正确，组件类型与 schema 中的类型匹配。
