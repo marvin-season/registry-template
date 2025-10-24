@@ -25,7 +25,6 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
 
   const githubUrl = `https://github.com/marvin-season/registry-template/blob/main/${page.absolutePath}`;
   const gitCommitLogs = page.data.gitCommitLogs;
-  console.log("gitCommitLogs", gitCommitLogs);
   return (
     <DocsPage toc={page.data.toc} full={page.data.full}>
       <div className="flex justify-between items-center sticky top-0 z-10 bg-white/50 backdrop-blur-xs supports-[backdrop-filter]:bg-white/50">
