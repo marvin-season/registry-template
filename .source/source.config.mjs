@@ -52,7 +52,7 @@ var gitCommitLogSchema = z.array(
 
 // source.config.ts
 var docsSchema = frontmatterSchema.extend({
-  author: z2.string(),
+  author: z2.string().optional().default("Marvin"),
   timeline: z2.boolean().optional().default(true),
   lastModified: z2.string().optional(),
   gitCommitLogs: gitCommitLogSchema

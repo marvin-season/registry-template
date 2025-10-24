@@ -1,5 +1,5 @@
 // test the ParseReadableStream function
-import { SSEMessageGenerator } from "./stream";
+import { SSEMessageGenerator } from ".";
 import { expect, test } from 'vitest'
 
 test('SSEMessageGenerator', async () => {

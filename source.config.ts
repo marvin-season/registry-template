@@ -6,7 +6,7 @@ import { remarkMdxFiles } from 'fumadocs-core/mdx-plugins';
 import { gitCommitLogSchema } from './types';
 
 const docsSchema = frontmatterSchema.extend({
-  author: z.string(),
+  author: z.string().optional().default('Marvin'),
   timeline: z.boolean().optional().default(true),
   lastModified: z.string().optional(),
   gitCommitLogs: gitCommitLogSchema,

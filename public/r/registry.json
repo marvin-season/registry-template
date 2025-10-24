@@ -22,9 +22,9 @@
       "description": "A library to stream functions",
       "files": [
         {
-          "path": "registry/utils/stream.ts",
+          "path": "registry/utils/stream/index.ts",
           "type": "registry:lib",
-          "target": "utils/stream.ts"
+          "target": "utils/stream/index.ts"
         }
       ]
     },
