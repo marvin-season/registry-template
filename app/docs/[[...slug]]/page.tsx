@@ -10,6 +10,7 @@ import { getMDXComponents } from "@/app/mdx-components";
 import type { Metadata } from "next";
 import { createRelativeLink } from "fumadocs-ui/mdx";
 import Link from "next/link";
+import { GitTimeline } from "@/components/GitTimeline";
 
 export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
   const params = await props.params;
@@ -18,31 +19,34 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
   const MDX = page.data.body;
 
   const lastModified = page.data.lastModified
-    ? new Date(page.data.lastModified).toLocaleDateString()
-    : "";
-  console.log("lastModified", page);
+    ? new Date(page.data.lastModified).toLocaleString()
+    : undefined;
   const author = page.data.author;
 
   const githubUrl = `https://github.com/marvin-season/registry-template/blob/main/${page.absolutePath}`;
-
+  const gitCommitLogs = page.data.gitCommitLogs;
+  console.log("gitCommitLogs", gitCommitLogs);
   return (
     <DocsPage toc={page.data.toc} full={page.data.full}>
-      <Link
-        href={githubUrl}
-        target="_blank"
-        className=" hover:translate-y-[-1px] transition-all duration-300"
-        title="View on GitHub"
-      >
-        <DocsTitle>{page.data.title}</DocsTitle>
-      </Link>
-      <DocsDescription>{page.data.description}</DocsDescription>
-      <div
-        className={`text-sm text-gray-500 ${
-          lastModified && author ? "block" : "hidden"
-        }`}
-      >
-        Last modified: {lastModified} by {author}
+      <div className="flex justify-between items-center">
+        <Link
+          href={githubUrl}
+          target="_blank"
+          className=" hover:translate-y-[-1px] transition-all duration-300"
+          title="View on GitHub"
+        >
+          <DocsTitle>{page.data.title}</DocsTitle>
+        </Link>
+        <span
+          className={`text-xs text-gray-500 ${
+            lastModified && author ? "block" : "hidden"
+          }`}
+        >
+          Last modified: {lastModified} by {author}
+        </span>
       </div>
+      <DocsDescription>{page.data.description}</DocsDescription>
+
       <DocsBody>
         <MDX
           components={getMDXComponents({
@@ -51,6 +55,7 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
           })}
         />
       </DocsBody>
+      <GitTimeline gitCommitLog={gitCommitLogs} />
     </DocsPage>
   );
 }
