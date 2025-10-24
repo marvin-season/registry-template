@@ -1,8 +1,8 @@
 // @ts-nocheck -- skip type checking
-import * as registry_2 from "../registry/new-york/blocks/zod-form/index.mdx?collection=registry&hash=1761277503467"
-import * as registry_1 from "../registry/new-york/blocks/hello-world/index.mdx?collection=registry&hash=1761277503467"
-import * as registry_0 from "../registry/hooks/use-mobile/index.mdx?collection=registry&hash=1761277503467"
-import * as docs_0 from "../content/docs/index.mdx?collection=docs&hash=1761277503467"
+import * as registry_2 from "../registry/new-york/blocks/zod-form/index.mdx?collection=registry&hash=1761285459455"
+import * as registry_1 from "../registry/new-york/blocks/hello-world/index.mdx?collection=registry&hash=1761285459455"
+import * as registry_0 from "../registry/hooks/use-mobile/index.mdx?collection=registry&hash=1761285459455"
+import * as docs_0 from "../content/docs/index.mdx?collection=docs&hash=1761285459455"
 import { _runtime } from "fumadocs-mdx/runtime/next"
 import * as _source from "../source.config"
 export const docs = _runtime.docs<typeof _source.docs>([{ info: {"path":"index.mdx","fullPath":"content/docs/index.mdx"}, data: docs_0 }], [])

@@ -1,9 +1,79 @@
 ---
-title: Hello World
+title: Project Structure
 author: Marvin
-description: A simple hello world document
+description: Project Structure of the registry
 ---
 
-## Introduction
-
-I love Anime.
+```files
+registry-template
+├── app
+│   ├── (home)
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   ├── docs
+│   │   ├── [[...slug]]
+│   │   │   └── page.tsx
+│   │   └── layout.tsx
+│   ├── favicon.ico
+│   ├── globals.css
+│   ├── layout.tsx
+│   └── mdx-components.tsx
+├── components
+│   ├── files.tsx
+│   ├── GitTimeline.tsx
+│   ├── InstallCommand.tsx
+│   ├── PreviewCode.tsx
+│   └── ui
+│       ├── card.tsx
+│       ├── collapsible.tsx
+│       └── separator.tsx
+├── content
+│   └── docs
+│       └── index.mdx
+├── lib
+│   ├── cn.ts
+│   ├── layout.shared.tsx
+│   ├── remark
+│   ├── source.ts
+│   └── utils.ts
+├── plugin
+│   └── remark
+│       ├── remark-git-timeline.ts
+│       └── remarkInstall.ts
+├── registry
+│   ├── hooks
+│   │   └── use-mobile
+│   │       ├── index.mdx
+│   │       └── index.ts
+│   ├── new-york
+│   │   ├── blocks
+│   │   │   ├── complex-component
+│   │   │   │   ├── components
+│   │   │   │   ├── hooks
+│   │   │   │   ├── lib
+│   │   │   │   └── page.tsx
+│   │   │   ├── example-form
+│   │   │   │   └── example-form.tsx
+│   │   │   ├── example-with-css
+│   │   │   │   ├── example-card.css
+│   │   │   │   └── example-card.tsx
+│   │   │   ├── hello-world
+│   │   │   │   ├── hello-world.tsx
+│   │   │   │   └── index.mdx
+│   │   └── ui
+│   │       ├── button.tsx
+│   │       ├── card.tsx
+│   │       ├── input.tsx
+│   │       ├── label.tsx
+│   │       └── textarea.tsx
+│   └── utils
+│       └── index.ts
+├── types
+│   └── index.ts
+├── next.config.ts
+├── package.json
+├── postcss.config.mjs
+├── registry.json
+├── source.config.ts
+└── tsconfig.json
+```

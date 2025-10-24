@@ -36,6 +36,9 @@ function remarkGitTimeline() {
   };
 }
 
+// source.config.ts
+import { remarkMdxFiles } from "fumadocs-core/mdx-plugins";
+
 // types/index.ts
 import z from "zod";
 var gitCommitLogSchema = z.array(
@@ -75,7 +78,8 @@ var source_config_default = defineConfig({
   lastModifiedTime: "git",
   mdxOptions: {
     remarkPlugins: [
-      remarkGitTimeline
+      remarkGitTimeline,
+      [remarkMdxFiles, {}]
     ]
   }
 });

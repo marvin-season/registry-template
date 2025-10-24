@@ -2,6 +2,7 @@
 import { defineDocs, defineConfig, metaSchema, frontmatterSchema,  } from 'fumadocs-mdx/config';
 import z from 'zod';
 import { remarkGitTimeline } from './plugin/remark/remark-git-timeline';
+import { remarkMdxFiles } from 'fumadocs-core/mdx-plugins';
 import { gitCommitLogSchema } from './types';
 
 const docsSchema = frontmatterSchema.extend({
@@ -34,6 +35,7 @@ export default defineConfig({
   mdxOptions: {
     remarkPlugins: [
       remarkGitTimeline,
+      [remarkMdxFiles, {}]
     ],
   },
 });
