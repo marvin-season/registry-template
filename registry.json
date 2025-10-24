@@ -16,6 +16,19 @@
       ]
     },
     {
+      "name": "stream",
+      "type": "registry:lib",
+      "title": "Stream",
+      "description": "A library to stream functions",
+      "files": [
+        {
+          "path": "registry/utils/stream.ts",
+          "type": "registry:lib",
+          "target": "utils/stream.ts"
+        }
+      ]
+    },
+    {
       "name": "use-mobile",
       "type": "registry:hook",
       "title": "Use Mobile",

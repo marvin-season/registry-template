@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "stream",
+  "type": "registry:lib",
+  "title": "Stream",
+  "description": "A library to stream functions",
+  "files": [
+    {
+      "path": "registry/utils/stream.ts",
+      "content": "export const textDecoder = new TextDecoder();\nexport const textEncoder = new TextEncoder();\n\nexport async function* SSEMessageGenerator<T>(\n  stream: ReadableStream<T> | null\n) {\n  if (!stream) {\n    return;\n  }\n  let rest_str = \"\";\n  const reader = stream.getReader();\n  try {\n    while (true) {\n      const { done, value } = await reader.read();\n      if (done) {\n        // 处理流结束时的剩余数据\n        if (rest_str.trim()) {\n          try {\n            const message = JSON.parse(rest_str);\n            yield message as T;\n          } catch (e) {\n            console.warn('Failed to parse remaining data:', e);\n          }\n        }\n        break;\n      }\n\n      const sse_chunk =\n        value instanceof ArrayBuffer\n          ? textDecoder.decode(value)\n          : (value as string);\n      for (const line of sse_chunk.split(/\\n+/)) {\n        const json_str = line.replace(/data:\\s*/, \"\").trim();\n        if (json_str.length > 0) {\n          try {\n            const message = JSON.parse(rest_str + json_str);\n            rest_str = \"\";\n            yield message as T; // 在生成器内yield消息\n          } catch (e) {\n            rest_str += json_str;\n            console.warn(e);\n          }\n        }\n      }\n    }\n  } finally {\n    reader.releaseLock();\n  }\n}",
+      "type": "registry:lib",
+      "target": "utils/stream.ts"
+    }
+  ]
+}
