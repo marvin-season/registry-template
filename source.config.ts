@@ -5,6 +5,7 @@ import z from 'zod';
 const docsSchema = frontmatterSchema.extend({
   author: z.string(),
   timeline: z.boolean().optional().default(true),
+  lastModified: z.string().optional(),
   gitCommitLogs: z
     .array(
       z.object({
@@ -36,6 +37,7 @@ export const registry = defineDocs({
 })
 
 export default defineConfig({
+  lastModifiedTime: 'git',
   mdxOptions: {
     remarkPlugins: [
     ],

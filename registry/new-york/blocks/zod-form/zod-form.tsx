@@ -124,9 +124,12 @@ export function ZodForm<T extends ZodSchema>(props: ZodFormProps<T>) {
           isRequired: jsonSchema.required?.includes(name),
           onValidate,
           className: fieldClassName,
-          key: name,
         };
-        return renderFields ? renderFields(props) : <ZodField {...props} />;
+        return renderFields ? (
+          renderFields(props)
+        ) : (
+          <ZodField key={name} {...props} />
+        );
       })}
       {children}
     </form>

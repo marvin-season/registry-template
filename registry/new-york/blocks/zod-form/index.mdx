@@ -6,21 +6,17 @@ description: A form component that uses Zod for validation.
 
 import { App } from "./demo";
 
-# [Zod Form](https://github.com/marvin-season/registry-template/blob/main/registry/new-york/blocks/zod-form/index.mdx)
-
-一个基于 Zod 验证的智能表单组件，支持自动字段生成、类型安全验证和自定义组件渲染。
-
-## 安装
+## Install
 
 <InstallCommand pkgName="zod-form" />
 
-## 预览
+## Preview
 
 <PreviewCode pkgName="zod-form">
   <App />
 </PreviewCode>
 
-## API 参考
+## API Reference
 
 ### ZodForm
 
@@ -39,7 +35,7 @@ import { App } from "./demo";
 | `children`       | `React.ReactNode`                           | -      | 表单子元素，通常用于添加提交按钮等                |
 | `renderFields`   | `(props: ZodFieldProps) => React.ReactNode` | -      | 自定义字段渲染函数                                |
 
-#### 示例
+#### Example
 
 ```tsx
 import {
@@ -91,9 +87,21 @@ function UserRegistrationForm() {
 
 ### ZodField
 
-单个表单字段组件，负责渲染特定类型的输入控件。
+A single form field component that renders specific input controls.
 
 #### Props
+
+| Property          | Type                                             | Default | Description                                              |
+| ----------------- | ------------------------------------------------ | ------- | -------------------------------------------------------- |
+| `name`            | `string`                                         | -       | **Required**. The name of the field                      |
+| `fieldJsonSchema` | `TFieldJSONSchema`                               | -       | **Required**. The JSON Schema configuration of the field |
+| `components`      | `TComponentMap`                                  | -       | **Required**. The component mapping                      |
+| `value`           | `any`                                            | -       | The value of the field                                   |
+| `error`           | `string`                                         | -       | The error message of the field                           |
+| `isRequired`      | `boolean`                                        | `false` | Whether the field is required                            |
+| `updateField`     | `(name: string, value: any) => void`             | -       | **Required**. The function to update the field value     |
+| `onValidate`      | `(name: string, value: any) => Promise<boolean>` | -       | **Required**. The function to validate the field         |
+| `className`       | `string`                                         | -       | The CSS class name of the field container                |
 
 | 属性              | 类型                                             | 默认值  | 描述                              |
 | ----------------- | ------------------------------------------------ | ------- | --------------------------------- |
@@ -118,7 +126,7 @@ function UserRegistrationForm() {
 | `placeholder` | `string` | 占位符文本                            |
 | `default`     | `any`    | 默认值                                |
 
-### 辅助组件
+### Helper Components
 
 #### ZodFormSubmit
 
