@@ -1,6 +1,5 @@
 import { TGitCommitLog } from "@/types";
 import { GitCommit, User, Calendar, MessageSquare } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 export function GitTimeline(props: { gitCommitLog: TGitCommitLog }) {
   const { gitCommitLog } = props;
@@ -12,8 +11,8 @@ export function GitTimeline(props: { gitCommitLog: TGitCommitLog }) {
           <div className="rounded-full bg-muted p-3">
             <GitCommit className="h-6 w-6" />
           </div>
-          <p className="text-sm font-medium">暂无提交记录</p>
-          <p className="text-xs">还没有任何提交历史</p>
+          <p className="text-sm font-medium">No commits yet</p>
+          <p className="text-xs">No commit history yet</p>
         </div>
       </div>
     );
@@ -22,13 +21,13 @@ export function GitTimeline(props: { gitCommitLog: TGitCommitLog }) {
   return (
     <div className="space-y-4">
       {/* 标题区域 */}
-      <div className="flex items-center gap-2">
+      <h2 className="flex items-center gap-2 text-base font-semibold text-foreground">
         <GitCommit className="h-4 w-4 text-primary" />
-        <h3 className="text-base font-semibold text-foreground">提交历史</h3>
-        <span className="text-xs text-muted-foreground">
-          ({gitCommitLog.length} 条)
+        Git Commit History
+        <span className="text-xs text-muted-foreground font-normal">
+          ({gitCommitLog.length} commits)
         </span>
-      </div>
+      </h2>
 
       <div className="relative">
         {/* 时间线连接线 */}
@@ -46,12 +45,15 @@ export function GitTimeline(props: { gitCommitLog: TGitCommitLog }) {
               </div>
 
               {/* 提交内容卡片 */}
-              <div className="flex-1 rounded-md border bg-card p-3 shadow-sm group-hover:shadow-md group-hover:border-primary/20 transition-all duration-200">
+              <div className="flex-1 rounded-md border bg-card p-3 shadow-xs group-hover:shadow-sm group-hover:border-primary/20 transition-all duration-200">
                 <div className="space-y-2">
                   {/* 提交信息 */}
-                  <p className="text-sm font-medium text-foreground leading-snug">
-                    {log.message}
-                  </p>
+                  <div className="flex items-center gap-2">
+                    <MessageSquare className="h-3 w-3" />
+                    <p className="text-sm font-medium text-foreground leading-snug">
+                      {log.message}
+                    </p>
+                  </div>
 
                   {/* 元信息 */}
                   <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
@@ -72,8 +74,8 @@ export function GitTimeline(props: { gitCommitLog: TGitCommitLog }) {
                       </span>
                     </div>
 
-                    <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">
-                      {log.hash.toString().slice(0, 7)}
+                    <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono cursor-pointer">
+                      {log.hash.toString().slice(0, 8)}
                     </code>
                   </div>
                 </div>
