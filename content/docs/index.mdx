@@ -40,35 +40,31 @@ registry-template
 │   └── remark
 │       ├── remark-git-timeline.ts
 │       └── remarkInstall.ts
-├── registry
+├── registry --> all components and blocks which you want to register and share are stored here
 │   ├── hooks
 │   │   └── use-mobile
 │   │       ├── index.mdx
 │   │       └── index.ts
-│   ├── new-york
+│   ├── new-york  --> a style
 │   │   ├── blocks
 │   │   │   ├── complex-component
 │   │   │   │   ├── components
 │   │   │   │   ├── hooks
 │   │   │   │   ├── lib
 │   │   │   │   └── page.tsx
-│   │   │   ├── example-form
-│   │   │   │   └── example-form.tsx
 │   │   │   ├── example-with-css
 │   │   │   │   ├── example-card.css
 │   │   │   │   └── example-card.tsx
 │   │   │   ├── hello-world
 │   │   │   │   ├── hello-world.tsx
 │   │   │   │   └── index.mdx
-│   │   └── ui
-│   │       ├── button.tsx
-│   │       ├── card.tsx
-│   │       ├── input.tsx
-│   │       ├── label.tsx
-│   │       └── textarea.tsx
-│   └── utils
-│       └── index.ts
-├── types
+│   │   ├── components --> all components registered by you are stored here
+│   │   │   ├── zod-form
+│   │   │   │   └── zod-form.tsx
+│   │   ├── ui --> all ui components registered by shadcn are stored here
+│   │   │   ├── button.tsx
+│   │   │   ├── card.tsx
+│   │   │   └── textarea.tsx
 │   └── index.ts
 ├── next.config.ts
 ├── package.json
