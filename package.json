@@ -7,6 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "registry:build": "shadcn build",
     "postinstall": "pnpm run docs:build && pnpm run registry:build",
     "docs:build": "fumadocs-mdx"
@@ -43,9 +47,11 @@
     "eslint-config-next": "16.0.0",
     "fumadocs-mdx": "^12.0.3",
     "glob": "^11.0.3",
+    "jsdom": "^27.0.1",
     "tailwindcss": "^4.1.11",
     "typescript": "^5.9.2",
-    "unified": "^11.0.5"
+    "unified": "^11.0.5",
+    "vitest": "^4.0.2"
   },
   "pnpm": {
     "overrides": {
