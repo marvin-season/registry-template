@@ -1,6 +1,6 @@
 "use client";
 
-import { ZodForm } from "@/registry/new-york/blocks/zod-form/zod-form";
+import { ZodForm } from "./zod-form";
 import {
   ZodFormFooter,
   ZodFormReset,
