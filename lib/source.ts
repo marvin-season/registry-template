@@ -1,6 +1,6 @@
 import { docs, registry } from '@/.source';
 import { InferPageType, loader } from 'fumadocs-core/source';
-import { createMDXSource } from 'fumadocs-mdx';
+import { createMDXSource } from 'fumadocs-mdx/runtime/next';
 
 export const source = loader({
   baseUrl: '/docs',
