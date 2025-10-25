@@ -27,7 +27,7 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
   const gitCommitLogs = page.data.gitCommitLogs;
   return (
     <DocsPage toc={page.data.toc} full={page.data.full}>
-      <div className="flex justify-between items-center sticky top-0 z-10 bg-white/50 backdrop-blur-xs supports-[backdrop-filter]:bg-white/50">
+      <div className="flex flex-col lg:flex-row justify-between items-center sticky top-0 z-10 backdrop-blur-xs">
         <Link
           href={githubUrl}
           target="_blank"
@@ -41,7 +41,7 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
             lastModified && author ? "block" : "hidden"
           }`}
         >
-          Last modified: {lastModified} by {author}
+          {lastModified} modified by {author}
         </span>
       </div>
       <DocsDescription>{page.data.description}</DocsDescription>

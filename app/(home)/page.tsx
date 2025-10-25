@@ -6,6 +6,7 @@ const linearGradient = "bg-gradient-to-r text-transparent bg-clip-text";
 export default function HomePage() {
   return (
     <main className="flex flex-1 flex-col justify-center text-center">
+      <Link href={"/docs"} className="text-2xl font-bold mb-4">Start</Link>
       <h1 className="mb-4 text-4xl font-bold">
         <Link
           target="_blank"
