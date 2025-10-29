@@ -1,10 +1,10 @@
-import { docs, registry } from '@/.source';
+import {  registry } from '@/.source';
 import { InferPageType, loader } from 'fumadocs-core/source';
 import { createMDXSource } from 'fumadocs-mdx/runtime/next';
 
 export const source = loader({
   baseUrl: '/docs',
-  source: createMDXSource([...docs.docs, ...registry.docs], [...docs.meta, ...registry.meta]),
+  source: createMDXSource([...registry.docs], [ ...registry.meta]),
 });
 
 export function getPageImage(page: InferPageType<typeof source>) {
