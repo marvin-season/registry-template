@@ -1,0 +1,158 @@
+---
+title: Zod Form
+author: Marvin
+description: A form component that uses Zod for validation.
+---
+
+import { App } from "./demo";
+
+## Install
+
+<InstallCommand pkgName="zod-form" />
+
+## Preview
+
+<PreviewCode pkgName="zod-form">
+  <App />
+</PreviewCode>
+
+## API Reference
+
+### ZodForm
+
+主要的表单组件，基于 Zod schema 自动生成表单字段。
+
+#### Props
+
+| 属性             | 类型                                        | 默认值 | 描述                                              |
+| ---------------- | ------------------------------------------- | ------ | ------------------------------------------------- |
+| `schema`         | `ZodObject<Record<string, ZodTypeAny>>`     | -      | **必需**。Zod schema 对象，定义表单结构和验证规则 |
+| `onSubmit`       | `(data: z.infer<T>) => void`                | -      | **必需**。表单提交时的回调函数                    |
+| `defaultValues`  | `Partial<z.infer<T>>`                       | `{}`   | 表单的默认值                                      |
+| `components`     | `TComponentMap`                             | `{}`   | 自定义组件映射，用于覆盖默认的字段组件            |
+| `className`      | `string`                                    | `""`   | 表单容器的 CSS 类名                               |
+| `fieldClassName` | `string`                                    | `""`   | 字段容器的 CSS 类名                               |
+| `children`       | `React.ReactNode`                           | -      | 表单子元素，通常用于添加提交按钮等                |
+| `renderFields`   | `(props: ZodFieldProps) => React.ReactNode` | -      | 自定义字段渲染函数                                |
+
+#### Example
+
+```tsx
+import {
+  ZodForm,
+  ZodFormFooter,
+  ZodFormSubmit,
+  ZodFormReset,
+} from "@/registry/new-york/blocks/zod-form";
+import { z } from "zod";
+
+const userSchema = z
+  .object({
+    username: z.string().min(3, "用户名至少3个字符"),
+    email: z.string().email("请输入有效邮箱"),
+    password: z.string().min(8, "密码至少8个字符"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "密码不匹配",
+    path: ["confirmPassword"],
+  });
+
+function UserRegistrationForm() {
+  const handleSubmit = (data) => {
+    console.log("用户数据:", data);
+    // 处理注册逻辑
+  };
+
+  return (
+    <ZodForm
+      schema={userSchema}
+      onSubmit={handleSubmit}
+      defaultValues={{
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      }}
+      className="max-w-md mx-auto"
+    >
+      <ZodFormFooter>
+        <ZodFormSubmit>注册</ZodFormSubmit>
+        <ZodFormReset variant="outline">重置</ZodFormReset>
+      </ZodFormFooter>
+    </ZodForm>
+  );
+}
+```
+
+### ZodField
+
+A single form field component that renders specific input controls.
+
+#### Props
+
+| Property          | Type                                             | Default | Description                                              |
+| ----------------- | ------------------------------------------------ | ------- | -------------------------------------------------------- |
+| `name`            | `string`                                         | -       | **Required**. The name of the field                      |
+| `fieldJsonSchema` | `TFieldJSONSchema`                               | -       | **Required**. The JSON Schema configuration of the field |
+| `components`      | `TComponentMap`                                  | -       | **Required**. The component mapping                      |
+| `value`           | `any`                                            | -       | The value of the field                                   |
+| `error`           | `string`                                         | -       | The error message of the field                           |
+| `isRequired`      | `boolean`                                        | `false` | Whether the field is required                            |
+| `updateField`     | `(name: string, value: any) => void`             | -       | **Required**. The function to update the field value     |
+| `onValidate`      | `(name: string, value: any) => Promise<boolean>` | -       | **Required**. The function to validate the field         |
+| `className`       | `string`                                         | -       | The CSS class name of the field container                |
+
+| 属性              | 类型                                             | 默认值  | 描述                              |
+| ----------------- | ------------------------------------------------ | ------- | --------------------------------- |
+| `name`            | `string`                                         | -       | **必需**。字段名称                |
+| `fieldJsonSchema` | `TFieldJSONSchema`                               | -       | **必需**。字段的 JSON Schema 配置 |
+| `components`      | `TComponentMap`                                  | -       | **必需**。组件映射                |
+| `value`           | `any`                                            | -       | 字段值                            |
+| `error`           | `string`                                         | -       | 错误信息                          |
+| `isRequired`      | `boolean`                                        | `false` | 是否为必填字段                    |
+| `updateField`     | `(name: string, value: any) => void`             | -       | **必需**。更新字段值的函数        |
+| `onValidate`      | `(name: string, value: any) => Promise<boolean>` | -       | **必需**。字段验证函数            |
+| `className`       | `string`                                         | -       | 字段容器的 CSS 类名               |
+
+#### 字段配置 (TFieldJSONSchema)
+
+| 属性          | 类型     | 描述                                  |
+| ------------- | -------- | ------------------------------------- |
+| `component`   | `string` | 指定使用的组件类型                    |
+| `type`        | `string` | 字段类型 (string, number, boolean 等) |
+| `label`       | `string` | 字段标签                              |
+| `description` | `string` | 字段描述                              |
+| `placeholder` | `string` | 占位符文本                            |
+| `default`     | `any`    | 默认值                                |
+
+### Helper Components
+
+#### ZodFormSubmit
+
+表单提交按钮组件。
+
+```tsx
+<ZodFormSubmit>提交</ZodFormSubmit>
+<ZodFormSubmit variant="destructive" size="lg">删除</ZodFormSubmit>
+```
+
+#### ZodFormReset
+
+表单重置按钮组件。
+
+```tsx
+<ZodFormReset>重置</ZodFormReset>
+<ZodFormReset variant="outline">清空</ZodFormReset>
+```
+
+#### ZodFormFooter
+
+表单底部容器组件，用于包装提交和重置按钮。
+
+```tsx
+<ZodFormFooter className="flex justify-between">
+  <ZodFormReset>重置</ZodFormReset>
+  <ZodFormSubmit>提交</ZodFormSubmit>
+</ZodFormFooter>
+```

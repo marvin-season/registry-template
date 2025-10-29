@@ -1,0 +1,125 @@
+# Git Attributes Configuration
+# 设置大小写敏感和文件处理规则
+
+# ====================
+# 全局默认设置
+# ====================
+# 自动检测文本文件并规范化行结束符
+* text=auto
+
+# ====================
+# 大小写敏感设置
+# ====================
+# 确保文件名大小写敏感（特别重要）
+*.tsx text eol=lf
+*.ts text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.mdx text eol=lf
+
+# ====================
+# TypeScript/React 项目文件
+# ====================
+# TypeScript 和 React 文件
+*.ts text eol=lf linguist-language=TypeScript
+*.tsx text eol=lf linguist-language=TypeScript
+*.js text eol=lf linguist-language=JavaScript  
+*.jsx text eol=lf linguist-language=JavaScript
+
+# 配置文件
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.toml text eol=lf
+package.json text eol=lf
+package-lock.json text eol=lf -diff
+pnpm-lock.yaml text eol=lf -diff
+yarn.lock text eol=lf -diff
+
+# ====================
+# 样式和标记文件
+# ====================
+*.css text eol=lf
+*.scss text eol=lf  
+*.sass text eol=lf
+*.less text eol=lf
+*.html text eol=lf
+*.htm text eol=lf
+*.xml text eol=lf
+*.svg text eol=lf
+
+# Markdown 文件
+*.md text eol=lf
+*.mdx text eol=lf
+*.markdown text eol=lf
+
+# ====================
+# 配置和脚本文件
+# ====================
+# 配置文件强制使用 LF
+.gitignore text eol=lf
+.gitattributes text eol=lf
+.editorconfig text eol=lf
+.eslintrc* text eol=lf
+.prettierrc* text eol=lf
+*.config.js text eol=lf
+*.config.ts text eol=lf
+*.config.mjs text eol=lf
+tsconfig.json text eol=lf
+jsconfig.json text eol=lf
+
+# Shell 脚本
+*.sh text eol=lf
+*.bash text eol=lf
+
+# ====================
+# 二进制文件
+# ====================
+# 图片文件（二进制）
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.svg text eol=lf
+
+# 字体文件
+*.woff binary
+*.woff2 binary  
+*.ttf binary
+*.eot binary
+
+# 其他二进制文件
+*.pdf binary
+*.zip binary
+*.tar.gz binary
+
+# ====================
+# 特殊处理文件
+# ====================
+# Node.js 依赖文件不进行差异比较（文件太大）
+package-lock.json -diff
+pnpm-lock.yaml -diff  
+yarn.lock -diff
+
+# 构建输出目录
+/out/** binary
+/dist/** binary
+/.next/** binary
+/build/** binary
+/coverage/** binary
+
+# ====================
+# Registry 项目特定配置
+# ====================
+# Registry 组件文件强制大小写敏感
+/registry/**/*.tsx text eol=lf
+/registry/**/*.ts text eol=lf  
+/registry/**/*.mdx text eol=lf
+/registry/**/*.json text eol=lf
+
+# 公共资源文件
+/public/**/*.json text eol=lf

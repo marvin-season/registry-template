@@ -1,0 +1,152 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "acme",
+  "homepage": "https://acme.com",
+  "items": [
+    {
+      "name": "utils",
+      "type": "registry:lib",
+      "title": "Utils",
+      "description": "A library to utils functions",
+      "files": [
+        {
+          "path": "registry/utils/index.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "stream",
+      "type": "registry:lib",
+      "title": "Stream",
+      "description": "A library to stream functions",
+      "dependencies": ["zod"],
+      "files": [
+        {
+          "path": "registry/utils/stream/index.ts",
+          "type": "registry:lib",
+          "target": "utils/stream/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "use-mobile",
+      "type": "registry:hook",
+      "title": "Use Mobile",
+      "description": "A hook to check if the user is on a mobile device",
+      "files": [
+        {
+          "path": "registry/hooks/use-mobile/index.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "use-intersection-observer",
+      "type": "registry:hook",
+      "title": "Use Intersection Observer",
+      "description": "A hook to check if an element is intersecting with the viewport",
+      "files": [
+        {
+          "path": "registry/hooks/use-intersection-observer/index.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "hello-world",
+      "type": "registry:component",
+      "title": "Hello World",
+      "description": "A simple hello world component",
+      "files": [
+        {
+          "path": "registry/new-york/blocks/hello-world/hello-world.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "children",
+      "type": "registry:component",
+      "title": "Children",
+      "description": "A component that renders its children.",
+      "files": [
+        {
+          "path": "registry/new-york/blocks/children/children.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "complex-component",
+      "type": "registry:component",
+      "title": "Complex Component",
+      "description": "A complex component showing hooks, libs and components.",
+      "registryDependencies": ["card"],
+      "files": [
+        {
+          "path": "registry/new-york/blocks/complex-component/page.tsx",
+          "type": "registry:page",
+          "target": "app/pokemon/page.tsx"
+        },
+        {
+          "path": "registry/new-york/blocks/complex-component/components/pokemon-card.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/new-york/blocks/complex-component/components/pokemon-image.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/new-york/blocks/complex-component/lib/pokemon.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "registry/new-york/blocks/complex-component/hooks/use-pokemon.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "example-with-css",
+      "type": "registry:component",
+      "title": "Example with CSS",
+      "description": "A login form with a CSS file.",
+      "files": [
+        {
+          "path": "registry/new-york/blocks/example-with-css/example-card.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/new-york/blocks/example-with-css/example-card.css",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "zod-form",
+      "type": "registry:component",
+      "title": "Zod Form",
+      "description": "A form component that uses Zod for validation with automatic field generation and type-safe validation.",
+      "dependencies": ["zod"],
+      "registryDependencies": ["button", "input"],
+      "files": [
+        {
+          "path": "registry/new-york/components/zod-form/zod-form.tsx",
+          "type": "registry:component",
+          "target": "components/zod-form/zod-form.tsx"
+        },
+        {
+          "path": "registry/new-york/components/zod-form/zod-field.tsx",
+          "type": "registry:component",
+          "target": "components/zod-form/zod-field.tsx"
+        },
+        {
+          "path": "registry/new-york/components/zod-form/default-components.tsx",
+          "type": "registry:component",
+          "target": "components/zod-form/default-components.tsx"
+        }
+      ]
+    }
+  ]
+}

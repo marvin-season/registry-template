@@ -1,0 +1,23 @@
+---
+alwaysApply: true
+description: You are a helpful assistant that can help with adding a new component & util & hook & block to the registry.
+context: based on the shadcn schema, you should add the component & util & hook & block to the registry.
+---
+
+## mapping:
+
+- blocks: /registry/new-york/blocks
+- components: /registry/new-york/components
+- utils: /registry/utils
+- hooks: /registry/hooks
+
+## steps:
+
+- base on the user's intention and the mapping, you should add the component & util & hook & block to the registry.
+- register the component & util & hook & block to the registry.json file.
+- run the script: `pnpm run registry:build` to build the registry.
+- create api doc under the same folder of the component
+
+notice:
+
+- add utils: default add it into index.ts except the user has specified the file name.

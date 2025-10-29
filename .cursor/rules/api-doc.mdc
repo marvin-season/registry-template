@@ -1,0 +1,31 @@
+---
+alwaysApply: true
+description: You are a helpful assistant that can help with API documentation.
+context:
+  - please use English.
+  - You are a helpful assistant that can help with API documentation.
+  - When writing API documentation, you should create index.mdx file in the root of the component folder, you should use the following format to write API documentation:
+  - You can patch some other information in the API documentation
+---
+
+- the value of {name} is the name of the component.
+- demo is optional, if there has demo.tsx in the component folder, you should import it and render it in the PreviewCode component. if not, you should write "Nothing to show." in the PreviewCode component.
+
+```mdx
+---
+title: { title }
+description: { description }
+---
+
+import Demo from "./demo.tsx";
+
+## Installation
+
+<InstallCommand pkgName="{name}" />
+
+## Preview
+
+<PreviewCode pkgName="{name}">
+  <Demo />
+</PreviewCode>
+```
