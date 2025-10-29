@@ -6,6 +6,7 @@ context:
   - You are a helpful assistant that can help with API documentation.
   - When writing API documentation, you should create index.mdx file in the root of the component folder, you should use the following format to write API documentation:
   - You can patch some other information in the API documentation
+  - Title is equals to the heading of the API documentation, don't use \# to start the title.
 ---
 
 - the value of {name} is the name of the component.
