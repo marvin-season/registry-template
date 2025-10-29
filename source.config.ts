@@ -1,7 +1,7 @@
 
 import { defineDocs, defineConfig, metaSchema, frontmatterSchema,  } from 'fumadocs-mdx/config';
 import z from 'zod';
-import { remarkGitTimeline } from './plugin/remark/remark-git-timeline';
+import { remarkGitTimeline } from '~/plugin/remark/remark-git-timeline';
 import { remarkMdxFiles } from 'fumadocs-core/mdx-plugins';
 import { gitCommitLogSchema } from './types';
 
@@ -12,6 +12,7 @@ const docsSchema = frontmatterSchema.extend({
   gitCommitLogs: gitCommitLogSchema,
 })
 export const docs = defineDocs({
+  dir: 'fumadocs/content',
   docs: {
     schema: docsSchema,
   },
@@ -21,7 +22,7 @@ export const docs = defineDocs({
 })
 
 export const registry = defineDocs({
-  dir: 'registry',
+  dir: 'fumadocs/registry',
   docs: {
     schema: docsSchema,
   },

@@ -10,7 +10,7 @@
       "description": "A library to utils functions",
       "files": [
         {
-          "path": "registry/utils/index.ts",
+          "path": "fumadocs/registry/utils/index.ts",
           "type": "registry:lib"
         }
       ]
@@ -23,7 +23,7 @@
       "dependencies": ["zod"],
       "files": [
         {
-          "path": "registry/utils/stream/index.ts",
+          "path": "fumadocs/registry/utils/stream/index.ts",
           "type": "registry:lib",
           "target": "utils/stream/index.ts"
         }
@@ -36,7 +36,7 @@
       "description": "A hook to check if the user is on a mobile device",
       "files": [
         {
-          "path": "registry/hooks/use-mobile/index.ts",
+          "path": "fumadocs/registry/hooks/use-mobile/index.ts",
           "type": "registry:hook"
         }
       ]
@@ -48,7 +48,7 @@
       "description": "A hook to check if an element is intersecting with the viewport",
       "files": [
         {
-          "path": "registry/hooks/use-intersection-observer/index.ts",
+          "path": "fumadocs/registry/hooks/use-intersection-observer/index.ts",
           "type": "registry:hook"
         }
       ]
@@ -60,7 +60,7 @@
       "description": "A simple hello world component",
       "files": [
         {
-          "path": "registry/new-york/blocks/hello-world/hello-world.tsx",
+          "path": "fumadocs/registry/blocks/hello-world/hello-world.tsx",
           "type": "registry:component"
         }
       ]
@@ -72,7 +72,7 @@
       "description": "A component that renders its children.",
       "files": [
         {
-          "path": "registry/new-york/blocks/children/children.tsx",
+          "path": "fumadocs/registry/blocks/children/children.tsx",
           "type": "registry:component"
         }
       ]
@@ -85,24 +85,24 @@
       "registryDependencies": ["card"],
       "files": [
         {
-          "path": "registry/new-york/blocks/complex-component/page.tsx",
+          "path": "fumadocs/registry/blocks/complex-component/page.tsx",
           "type": "registry:page",
           "target": "app/pokemon/page.tsx"
         },
         {
-          "path": "registry/new-york/blocks/complex-component/components/pokemon-card.tsx",
+          "path": "fumadocs/registry/blocks/complex-component/components/pokemon-card.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/new-york/blocks/complex-component/components/pokemon-image.tsx",
+          "path": "fumadocs/registry/blocks/complex-component/components/pokemon-image.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/new-york/blocks/complex-component/lib/pokemon.ts",
+          "path": "fumadocs/registry/blocks/complex-component/lib/pokemon.ts",
           "type": "registry:lib"
         },
         {
-          "path": "registry/new-york/blocks/complex-component/hooks/use-pokemon.ts",
+          "path": "fumadocs/registry/blocks/complex-component/hooks/use-pokemon.ts",
           "type": "registry:hook"
         }
       ]
@@ -114,11 +114,11 @@
       "description": "A login form with a CSS file.",
       "files": [
         {
-          "path": "registry/new-york/blocks/example-with-css/example-card.tsx",
+          "path": "fumadocs/registry/blocks/example-with-css/example-card.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/new-york/blocks/example-with-css/example-card.css",
+          "path": "fumadocs/registry/blocks/example-with-css/example-card.css",
           "type": "registry:component"
         }
       ]
@@ -132,17 +132,17 @@
       "registryDependencies": ["button", "input"],
       "files": [
         {
-          "path": "registry/new-york/components/zod-form/zod-form.tsx",
+          "path": "fumadocs/registry/components/zod-form/zod-form.tsx",
           "type": "registry:component",
           "target": "components/zod-form/zod-form.tsx"
         },
         {
-          "path": "registry/new-york/components/zod-form/zod-field.tsx",
+          "path": "fumadocs/registry/components/zod-form/zod-field.tsx",
           "type": "registry:component",
           "target": "components/zod-form/zod-field.tsx"
         },
         {
-          "path": "registry/new-york/components/zod-form/default-components.tsx",
+          "path": "fumadocs/registry/components/zod-form/default-components.tsx",
           "type": "registry:component",
           "target": "components/zod-form/default-components.tsx"
         }
