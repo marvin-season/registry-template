@@ -6,11 +6,11 @@ import {
   DocsTitle,
 } from "fumadocs-ui/page";
 import { notFound } from "next/navigation";
-import { getMDXComponents } from "@/app/mdx-components";
+import { getMDXComponents } from "@/lib/mdx-components";
 import type { Metadata } from "next";
 import { createRelativeLink } from "fumadocs-ui/mdx";
 import Link from "next/link";
-import { GitTimeline } from "@/components/GitTimeline";
+import { GitTimeline } from "@/components/fumadocs-mdx-component/git-timeline";
 
 export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
   const params = await props.params;

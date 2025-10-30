@@ -1,9 +1,13 @@
 import defaultMdxComponents from "fumadocs-ui/mdx";
 import type { MDXComponents } from "mdx/types";
 import { Tab, Tabs } from "fumadocs-ui/components/tabs";
-import { InstallCommand } from "@/components/InstallCommand";
-import { PreviewCode } from "@/components/PreviewCode";
-import { File, Folder, Files } from "@/components/files";
+import {
+  File,
+  Folder,
+  Files,
+  InstallCommand,
+  PreviewCode,
+} from "@/components/fumadocs-mdx-component";
 export function getMDXComponents(components?: MDXComponents): MDXComponents {
   return {
     Tab,

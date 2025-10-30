@@ -12,8 +12,8 @@ export function InstallCommand(props: { pkgName: string }) {
   const [domain, setDomain] = useState<string>("");
   const installCommand = `shadcn@latest add "${domain}${baseURL}/r/${pkgName}.json"`;
   const withPNPMCommand = `pnpm dlx ${installCommand}`;
-  const withYarnCommand = `yarn add ${installCommand}`;
-  const withNPMCommand = `npm install ${installCommand}`;
+  const withYarnCommand = `yarn ${installCommand}`;
+  const withNPMCommand = `npx ${installCommand}`;
   // 安全地获取域名
   useEffect(() => {
     if (typeof window !== "undefined") {

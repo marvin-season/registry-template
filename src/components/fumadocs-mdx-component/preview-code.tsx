@@ -7,7 +7,14 @@ export function PreviewCode(props: {
   pkgName: string;
   children: React.ReactNode;
 }) {
-  const { pkgName, children } = props;
+  const {
+    pkgName,
+    children = (
+      <div className="text-center text-sm text-muted-foreground">
+        Nothing to preview
+      </div>
+    ),
+  } = props;
 
   const files = globSync(
     `${process.cwd()}/registry/{hooks,new-york,components,utils}/**/${pkgName}/*.{ts,tsx}`,
