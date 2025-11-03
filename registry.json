@@ -4,6 +4,29 @@
   "homepage": "https://acme.com",
   "items": [
     {
+      "name": "fcm",
+      "type": "registry:lib",
+      "title": "FCM",
+      "description": "A library to handle Firebase Cloud Messaging",
+      "dependencies": ["firebase"],
+      "files": [
+        {
+          "path": "fumadocs/registry/utils/fcm/firebase-messaging-sw.js",
+          "target": "public/firebase-messaging-sw.js",
+          "type": "registry:lib"
+        },
+        {
+          "path": "fumadocs/registry/utils/fcm/use-firebase-message.ts",
+          "target": "hooks/use-firebase-message.ts",
+          "type": "registry:hook"
+        },
+        {
+          "path": "fumadocs/registry/utils/fcm/fcm-helper.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
       "name": "utils",
       "type": "registry:lib",
       "title": "Utils",

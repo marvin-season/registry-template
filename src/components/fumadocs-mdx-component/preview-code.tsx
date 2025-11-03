@@ -17,7 +17,7 @@ export function PreviewCode(props: {
   } = props;
 
   const files = globSync(
-    `${process.cwd()}/registry/{hooks,new-york,components,utils}/**/${pkgName}/*.{ts,tsx}`,
+    `${process.cwd()}/fumadocs/registry/{hooks,new-york,components,utils}/**/${pkgName}/*.{js,ts,tsx}`,
   );
 
   const codes = useMemo(() => {
