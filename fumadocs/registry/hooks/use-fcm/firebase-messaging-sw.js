@@ -1,4 +1,5 @@
 const logger = console.log;
+// some key maybe unnecessary, but keep it for now
 const searchKey = "__s";
 const searchValue = "n";
 const storageKey = "storageKey";

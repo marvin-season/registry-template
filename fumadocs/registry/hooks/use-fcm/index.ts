@@ -5,7 +5,7 @@ import { useDebounceFn } from 'ahooks'
 import { onMessage as onMessage_ } from 'firebase/messaging'
 
 
-import { getFCMToken, messaging } from '@/lib/fcm'
+import { getFCMToken, messaging } from './helper'
 import type { MessagePayload } from 'firebase/messaging'
 
 const vapidKey = process.env.NEXT_PUBLIC_VAPID_KEY

@@ -15,13 +15,13 @@
           "type": "registry:hook"
         },
         {
-          "path": "fumadocs/registry/utils/fcm/firebase-messaging-sw.js",
-          "target": "_public/firebase-messaging-sw.js",
+          "path": "fumadocs/registry/hooks/use-fcm/firebase-messaging-sw.js",
+          "target": "hooks/use-fcm/firebase-messaging-sw.js",
           "type": "registry:lib"
         },
         {
-          "path": "fumadocs/registry/utils/fcm/index.ts",
-          "target": "lib/fcm/index.ts",
+          "path": "fumadocs/registry/hooks/use-fcm/helper.ts",
+          "target": "hooks/use-fcm/helper.ts",
           "type": "registry:lib"
         }
       ]
