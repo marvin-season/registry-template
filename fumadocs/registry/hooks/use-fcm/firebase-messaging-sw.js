@@ -92,5 +92,5 @@ messaging.onBackgroundMessage(async (payload) => {
 			type: CHANNEL_NOTIFICATION_KEY,
 			payload,
 		});
-	} catch (error) {}
+	} catch (_error) {}
 });

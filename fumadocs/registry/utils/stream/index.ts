@@ -56,7 +56,7 @@ export function MessageParser<T extends z.ZodSchema>(message: string, schema: T)
 			throw new Error(result.error.message);
 		}
 		return result.data;
-	} catch (e) {
+	} catch (_e) {
 		return null;
 	}
 }

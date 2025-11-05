@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { type Updater, useImmer } from 'use-immer';
-import z, { type ZodSchema } from 'zod';
+import type { ZodSchema } from 'zod';
 import { MessageParser, SSEMessageGenerator } from '~/registry/utils/stream';
 
 interface IMessage {
@@ -18,7 +18,7 @@ export default function useChat<T extends IMessage>(props: IUseChatProps<T>) {
 	const { initialMessages = [], adapter, getReadableStream, schema } = props;
 
 	const [messages, setMessages] = useImmer<T[]>(initialMessages);
-	const [status, setStatus] = useState<IStatus>('idle');
+	const [_status, setStatus] = useState<IStatus>('idle');
 
 	const start = useCallback(async () => {
 		setStatus('running');
@@ -33,19 +33,19 @@ export default function useChat<T extends IMessage>(props: IUseChatProps<T>) {
 			adapter(setMessages, result);
 		}
 		setStatus('idle');
-	}, [setMessages, status, adapter, schema, getReadableStream]); // TODO: Implement start
+	}, [setMessages, adapter, schema, getReadableStream]); // TODO: Implement start
 
 	const stop = useCallback(() => {
 		setStatus('stopped');
-	}, [setStatus]); // TODO: Implement stop
+	}, []); // TODO: Implement stop
 
 	const resume = useCallback(() => {
 		setStatus('running');
-	}, [setStatus]); // TODO: Implement resume
+	}, []); // TODO: Implement resume
 
 	const pause = useCallback(() => {
 		setStatus('paused');
-	}, [setStatus]); // TODO: Implement pause
+	}, []); // TODO: Implement pause
 
 	return {
 		messages,

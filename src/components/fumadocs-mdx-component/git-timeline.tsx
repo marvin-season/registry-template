@@ -32,7 +32,7 @@ export function GitTimeline(props: { gitCommitLog: TGitCommitLog }) {
 				<div className="absolute left-4 top-0 bottom-0 w-0.5 bg-linear-to-b from-primary/20 via-primary/40 to-primary/20"></div>
 
 				<div className="space-y-3">
-					{gitCommitLog.map((log, index) => (
+					{gitCommitLog.map((log, _index) => (
 						<div key={log.hash} className="relative flex items-start gap-3 group">
 							{/* 时间线节点 */}
 							<div className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-card border border-primary/20 shadow-sm group-hover:border-primary/40 transition-all duration-200">

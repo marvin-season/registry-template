@@ -70,7 +70,7 @@ export function ZodForm<T extends ZodSchema>(props: ZodFormProps<T>) {
 			});
 			setErrors(newErrors);
 		},
-		[setErrors],
+		[],
 	);
 
 	const onValidate = async (name: string, value: any) => {

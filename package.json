@@ -14,7 +14,7 @@
     "postinstall": "pnpm run registry:build && pnpm run docs:build",
     "docs:build": "fumadocs-mdx",
     "format": "biome format --write",
-    "lint": "biome lint --write",
+    "lint": "biome lint --write --unsafe",
     "check": "biome check --write"
   },
   "dependencies": {
