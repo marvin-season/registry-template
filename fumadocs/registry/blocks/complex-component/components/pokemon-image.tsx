@@ -1,20 +1,14 @@
-"use client";
+'use client';
 
 /* eslint-disable @next/next/no-img-element */
-import { usePokemonImage } from "../hooks/use-pokemon";
+import { usePokemonImage } from '../hooks/use-pokemon';
 
-export function PokemonImage({
-  name,
-  number,
-}: {
-  name: string;
-  number: number;
-}) {
-  const imageUrl = usePokemonImage(number);
+export function PokemonImage({ name, number }: { name: string; number: number }) {
+	const imageUrl = usePokemonImage(number);
 
-  if (!imageUrl) {
-    return null;
-  }
+	if (!imageUrl) {
+		return null;
+	}
 
-  return <img src={imageUrl} alt={name} />;
+	return <img src={imageUrl} alt={name} />;
 }

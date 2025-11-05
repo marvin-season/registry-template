@@ -1,57 +1,56 @@
-import { useCallback, useState } from "react";
-import { Updater, useImmer } from "use-immer";
-import z, { ZodSchema } from "zod";
-import { MessageParser, SSEMessageGenerator } from "~/registry/utils/stream";
+import { useCallback, useState } from 'react';
+import { Updater, useImmer } from 'use-immer';
+import z, { ZodSchema } from 'zod';
+import { MessageParser, SSEMessageGenerator } from '~/registry/utils/stream';
 interface IMessage {
-  id: string;
+	id: string;
 }
 
-type IStatus = "idle" | "running" | "paused" | "stopped";
+type IStatus = 'idle' | 'running' | 'paused' | 'stopped';
 interface IUseChatProps<T extends IMessage> {
-  schema: ZodSchema<T>;
-  initialMessages?: T[];
-  adapter: (updater: Updater<T[]>, data: T) => void
-  getReadableStream: () => ReadableStream;
+	schema: ZodSchema<T>;
+	initialMessages?: T[];
+	adapter: (updater: Updater<T[]>, data: T) => void;
+	getReadableStream: () => ReadableStream;
 }
 export default function useChat<T extends IMessage>(props: IUseChatProps<T>) {
+	const { initialMessages = [], adapter, getReadableStream, schema } = props;
 
-  const { initialMessages = [], adapter, getReadableStream, schema } = props;
+	const [messages, setMessages] = useImmer<T[]>(initialMessages);
+	const [status, setStatus] = useState<IStatus>('idle');
 
-  const [messages, setMessages] = useImmer<T[]>(initialMessages);
-  const [status, setStatus] = useState<IStatus>("idle");
+	const start = useCallback(async () => {
+		setStatus('running');
+		const generator = SSEMessageGenerator(getReadableStream());
 
-  const start = useCallback(async () => { 
-    setStatus("running");
-    const generator = SSEMessageGenerator(getReadableStream());
+		for await (const message of generator) {
+			const result = MessageParser(message, schema);
 
-    for await (const message of generator) {
-      const result = MessageParser(message, schema);
+			if (!result) {
+				continue;
+			}
+			adapter(setMessages, result);
+		}
+		setStatus('idle');
+	}, [setMessages, status, adapter, schema, getReadableStream]); // TODO: Implement start
 
-      if (!result) {
-        continue;
-      }
-      adapter(setMessages, result);
-    }
-    setStatus("idle");
-  }, [setMessages, status, adapter, schema, getReadableStream]); // TODO: Implement start
+	const stop = useCallback(() => {
+		setStatus('stopped');
+	}, [setStatus]); // TODO: Implement stop
 
-  const stop = useCallback(() => {
-    setStatus("stopped");
-  }, [setStatus]); // TODO: Implement stop
+	const resume = useCallback(() => {
+		setStatus('running');
+	}, [setStatus]); // TODO: Implement resume
 
-  const resume = useCallback(() => {
-    setStatus("running");
-  }, [setStatus]); // TODO: Implement resume
+	const pause = useCallback(() => {
+		setStatus('paused');
+	}, [setStatus]); // TODO: Implement pause
 
-  const pause = useCallback(() => {
-    setStatus("paused");
-  }, [setStatus]); // TODO: Implement pause
-
-  return {
-    messages,
-    start,
-    stop,
-    resume,
-    pause,
-  };
+	return {
+		messages,
+		start,
+		stop,
+		resume,
+		pause,
+	};
 }

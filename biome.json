@@ -6,11 +6,14 @@
 		"useIgnoreFile": true
 	},
 	"files": {
-		"ignoreUnknown": false
+		"ignoreUnknown": false,
+		"includes": ["fumadocs/**/*.tsx", "fumadocs/**/*.{ts,tsx,js,jsx}", "src/**/*.{ts,tsx,js,jsx}"]
 	},
 	"formatter": {
 		"enabled": true,
-		"indentStyle": "tab"
+		"indentStyle": "tab",
+		"lineWidth": 120,
+		"indentWidth": 2
 	},
 	"linter": {
 		"enabled": true,
@@ -20,7 +23,7 @@
 	},
 	"javascript": {
 		"formatter": {
-			"quoteStyle": "double"
+			"quoteStyle": "single"
 		}
 	},
 	"assist": {

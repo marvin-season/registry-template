@@ -13,7 +13,8 @@
     "test:coverage": "vitest run --coverage",
     "registry:build": "shadcn build",
     "postinstall": "pnpm run registry:build && pnpm run docs:build",
-    "docs:build": "fumadocs-mdx"
+    "docs:build": "fumadocs-mdx",
+    "format": "biome format --write"
   },
   "dependencies": {
     "@radix-ui/react-collapsible": "^1.1.12",
