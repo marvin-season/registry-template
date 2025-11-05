@@ -74,7 +74,7 @@ export function ZodForm<T extends ZodSchema>(props: ZodFormProps<T>) {
 	);
 
 	const onValidate = async (name: string, value: any) => {
-		const fieldSchema = schema.shape[name]!;
+		const fieldSchema = schema.shape[name];
 
 		const result = fieldSchema?.safeParse(value);
 		if (result.success) {
