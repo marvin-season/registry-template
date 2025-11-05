@@ -1,6 +1,7 @@
 import { cache } from 'react';
 import { PokemonCard } from './components/pokemon-card';
 import { getPokemonList } from './lib/pokemon';
+
 const getCachedPokemonList = cache(getPokemonList);
 
 export default async function Page() {

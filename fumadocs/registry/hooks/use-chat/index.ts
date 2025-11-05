@@ -1,7 +1,8 @@
 import { useCallback, useState } from 'react';
-import { Updater, useImmer } from 'use-immer';
-import z, { ZodSchema } from 'zod';
+import { type Updater, useImmer } from 'use-immer';
+import z, { type ZodSchema } from 'zod';
 import { MessageParser, SSEMessageGenerator } from '~/registry/utils/stream';
+
 interface IMessage {
 	id: string;
 }

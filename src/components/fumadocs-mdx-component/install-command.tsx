@@ -1,8 +1,9 @@
 'use client';
 
-import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { DynamicCodeBlock } from 'fumadocs-ui/components/dynamic-codeblock';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { useEffect, useState } from 'react';
+
 const isProduction = typeof process !== 'undefined' && process.env.NODE_ENV === 'production';
 
 const baseURL = isProduction ? '/registry-template' : '';

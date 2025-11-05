@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import type { z } from 'zod';
 
 export const textDecoder = new TextDecoder();
 export const textEncoder = new TextEncoder();

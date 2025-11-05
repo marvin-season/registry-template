@@ -1,7 +1,8 @@
 // test the ParseReadableStream function
+
+import { expect, test } from 'vitest';
 import z from 'zod';
 import { MessageParser, SSEMessageGenerator } from '.';
-import { expect, test } from 'vitest';
 
 test('SSEMessageGenerator', async () => {
 	const readableStream = new ReadableStream({

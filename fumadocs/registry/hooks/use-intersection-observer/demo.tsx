@@ -1,7 +1,7 @@
 'use client';
 
-import { useIntersectionObserver } from './index';
 import { useRef } from 'react';
+import { useIntersectionObserver } from './index';
 
 export const Demo = () => {
 	const containerRef = useRef<HTMLDivElement>(null);

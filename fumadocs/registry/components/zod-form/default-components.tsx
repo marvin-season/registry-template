@@ -1,8 +1,7 @@
-import { useMemo, type FC, type InputHTMLAttributes } from 'react';
-
-import { cn } from '@/lib/utils';
-import { Input } from '@/components/ui/input';
+import { type FC, type InputHTMLAttributes, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
 export type TFieldJSONSchema = {
 	component?: string;
 	placeholder?: string;

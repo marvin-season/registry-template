@@ -1,7 +1,7 @@
+import { readFileSync } from 'node:fs';
 import { DynamicCodeBlock } from 'fumadocs-ui/components/dynamic-codeblock';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { globSync } from 'glob';
-import { readFileSync } from 'node:fs';
 import { useMemo } from 'react';
 export function PreviewCode(props: { pkgName: string; children: React.ReactNode }) {
 	const { pkgName, children = <div className="text-center text-sm text-muted-foreground">Nothing to preview</div> } =

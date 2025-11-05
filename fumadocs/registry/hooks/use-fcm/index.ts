@@ -1,11 +1,10 @@
 // @ts-nocheck
 
-import { useCallback, useEffect } from 'react';
 import { useDebounceFn } from 'ahooks';
-import { onMessage as onMessage_ } from 'firebase/messaging';
-
-import { getFCMToken, messaging } from './helper';
 import type { MessagePayload } from 'firebase/messaging';
+import { onMessage as onMessage_ } from 'firebase/messaging';
+import { useCallback, useEffect } from 'react';
+import { getFCMToken, messaging } from './helper';
 
 const vapidKey = process.env.NEXT_PUBLIC_VAPID_KEY;
 

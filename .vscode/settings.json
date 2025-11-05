@@ -1,6 +1,9 @@
 {
   "prettier.configPath": ".prettierrc",
   "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+  },
   "material-icon-theme.folders.associations": {
     "blocks": "components",
     "components": "components",

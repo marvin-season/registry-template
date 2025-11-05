@@ -1,5 +1,5 @@
-import { TGitCommitLog } from '@/types';
-import { GitCommit, User, Calendar, MessageSquare } from 'lucide-react';
+import { Calendar, GitCommit, MessageSquare, User } from 'lucide-react';
+import type { TGitCommitLog } from '@/types';
 
 export function GitTimeline(props: { gitCommitLog: TGitCommitLog }) {
 	const { gitCommitLog } = props;

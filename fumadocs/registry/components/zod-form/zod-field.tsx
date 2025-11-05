@@ -1,5 +1,5 @@
-import { defaultComponents, type TComponentMap } from './default-components';
 import type { INativeInputProps, TFieldJSONSchema } from './default-components';
+import { defaultComponents, type TComponentMap } from './default-components';
 
 export type ZodFieldProps<T = string> = INativeInputProps<T> & {
 	components: TComponentMap;
@@ -47,14 +47,9 @@ export function ZodField({
 	);
 }
 
-interface ExtractComponentParams<T> {
-	(params: {
-		fieldJsonSchema: TFieldJSONSchema;
-		components: T;
-	}): {
-		component: T[keyof T];
-	};
-}
+type ExtractComponentParams<T> = (params: { fieldJsonSchema: TFieldJSONSchema; components: T }) => {
+	component: T[keyof T];
+};
 
 const extractComponent: ExtractComponentParams<TComponentMap> = (params) => {
 	const { fieldJsonSchema } = params;

@@ -1,6 +1,6 @@
 import { cache } from 'react';
-import { getPokemon } from '../lib/pokemon';
 import { Card, CardContent } from '@/components/ui/card';
+import { getPokemon } from '../lib/pokemon';
 import { PokemonImage } from './pokemon-image';
 
 const cachedGetPokemon = cache(getPokemon);

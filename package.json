@@ -6,7 +6,6 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
@@ -14,7 +13,9 @@
     "registry:build": "shadcn build",
     "postinstall": "pnpm run registry:build && pnpm run docs:build",
     "docs:build": "fumadocs-mdx",
-    "format": "biome format --write"
+    "format": "biome format --write",
+    "lint": "biome lint --write",
+    "check": "biome check --write"
   },
   "dependencies": {
     "@radix-ui/react-collapsible": "^1.1.12",

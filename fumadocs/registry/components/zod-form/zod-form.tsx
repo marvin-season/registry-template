@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useCallback, useMemo, useState } from 'react';
+import type React from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { z } from 'zod';
-import { type TComponentMap } from './default-components';
+import type { TComponentMap } from './default-components';
 import { ZodField, type ZodFieldProps } from './zod-field';
 
 type ZodSchema = z.ZodObject<Record<string, z.ZodTypeAny>>;

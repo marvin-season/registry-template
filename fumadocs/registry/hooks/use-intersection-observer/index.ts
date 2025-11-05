@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export const useIntersectionObserver = <T extends Element = HTMLElement>(options: IntersectionObserverInit = {}) => {
 	const [isIntersecting, setIsIntersecting] = useState(false);

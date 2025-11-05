@@ -1,8 +1,9 @@
 'use client';
 
-import { ZodForm } from './zod-form';
-import { ZodFormFooter, ZodFormReset, ZodFormSubmit } from './default-components';
 import { z } from 'zod';
+import { ZodFormFooter, ZodFormReset, ZodFormSubmit } from './default-components';
+import { ZodForm } from './zod-form';
+
 const schema = z.object({
 	name: z.string().min(1, '姓名不能为空'),
 	email: z.email('请输入有效的邮箱地址'),

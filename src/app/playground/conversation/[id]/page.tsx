@@ -1,8 +1,8 @@
 'use client';
 
-import useChat from '~/registry/hooks/use-chat';
-import { Button } from '@/components/ui/button';
 import z from 'zod';
+import { Button } from '@/components/ui/button';
+import useChat from '~/registry/hooks/use-chat';
 
 function getReadableStream() {
 	return new ReadableStream({
