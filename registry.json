@@ -27,13 +27,14 @@
       ]
     },
     {
-      "name": "utils",
+      "name": "common",
       "type": "registry:lib",
-      "title": "Utils",
-      "description": "A library to utils functions",
+      "title": "Common",
+      "description": "A library to common functions",
       "files": [
         {
-          "path": "fumadocs/registry/utils/index.ts",
+          "path": "fumadocs/registry/utils/common/index.ts",
+          "target": "lib/common/index.ts",
           "type": "registry:lib"
         }
       ]
@@ -48,7 +49,7 @@
         {
           "path": "fumadocs/registry/utils/stream/index.ts",
           "type": "registry:lib",
-          "target": "utils/stream/index.ts"
+          "target": "lib/stream/index.ts"
         }
       ]
     },

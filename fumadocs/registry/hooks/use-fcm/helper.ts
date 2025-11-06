@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { initializeApp } from 'firebase/app';
 import { type GetTokenOptions, getMessaging, getToken, isSupported } from 'firebase/messaging';
+import { requestPermission } from '@/lib';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCN99e2MFNFCBgZAh4YjbboM7dx4L208cc',
@@ -17,12 +18,10 @@ const app = initializeApp(firebaseConfig);
 // Initialize Firebase Cloud Messaging and get a reference to the service
 export const messaging = () => getMessaging(app);
 
-export async function getFCMToken(
-  params: {
-    permission?: NotificationPermission;
-  } & Pick<GetTokenOptions, 'vapidKey'>,
-) {
-  const { permission, vapidKey } = params;
+export async function getFCMToken(params: Pick<GetTokenOptions, 'vapidKey'>) {
+  const { vapidKey } = params;
+  const permission = await requestPermission();
+
   if (typeof window !== 'undefined' && 'serviceWorker' in navigator && permission === 'granted') {
     try {
       if (!(await isSupported())) {
