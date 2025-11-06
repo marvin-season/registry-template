@@ -12,6 +12,12 @@ export default function Layout({ children }: LayoutProps<'/'>) {
           text: 'Docs',
           url: '/docs',
         },
+        {
+          type: 'main',
+          on: 'nav',
+          text: 'Blog',
+          url: '/blog',
+        },
       ]}
     >
       {children}

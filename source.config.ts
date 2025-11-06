@@ -22,6 +22,16 @@ export const registry = defineDocs({
   },
 })
 
+export const blog = defineDocs({
+  dir: 'fumadocs/blog',
+  docs: {
+    schema: docsSchema,
+  },
+  meta: {
+    schema: metaSchema,
+  },
+})
+
 export default defineConfig({
   lastModifiedTime: 'git',
   mdxOptions: {
