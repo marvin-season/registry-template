@@ -1,11 +1,28 @@
 ---
-title: Introduction
+title: Structure
 author: Marvin
-description: Introduction of the registry
+description: Structure of the registry
 ---
 
-## Create
+## Folder Structure
 
-- create a `component` & `lib` & `hook` in registry folder
-- add it in `registry.json`
-- build the registry
+```files
+repo/
+├── fumadocs/
+│   ├── registry/
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   ├── lib/
+│   │   └── utils/
+│   └── .../
+└── src/
+    ├── app/
+    │   ├── docs/
+    │   │   ├── [[...slug]]/
+    │   │   └── ...
+    │   └── .../
+    └── .../
+```
+
+fumadocs: the folder contains the registry files and the related docs files
+src/app: the ui of the site
