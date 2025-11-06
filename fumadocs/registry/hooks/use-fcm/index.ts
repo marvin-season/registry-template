@@ -1,43 +1,34 @@
 // @ts-nocheck
 
-import { useDebounceFn } from 'ahooks';
 import type { MessagePayload } from 'firebase/messaging';
 import { onMessage as onMessage_ } from 'firebase/messaging';
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { getFCMToken, messaging } from './helper';
 
-const vapidKey = process.env.NEXT_PUBLIC_VAPID_KEY;
+const vapidKey = 'Your Vapid Key';
 
 export function useFCM({
-	onMessage,
-	onSaveToken,
+  onMessage,
+  onToken,
 }: {
-	onMessage?: (payload: MessagePayload) => void;
-	onSaveToken?: (token: string) => void;
+  onMessage?: (payload: MessagePayload) => void;
+  onToken?: (token: string) => void;
 }) {
-	const getAndSaveToken = useCallback(async () => {
-		const token = await getFCMToken({
-			vapidKey,
-		});
+  useEffect(() => {
+    getFCMToken({
+      vapidKey,
+    }).then((token) => {
+      if (token) {
+        onToken?.(token);
+      }
+    });
+  }, [onToken]);
 
-		if (token) {
-			onSaveToken?.(token);
-		}
-	}, [onSaveToken]);
-
-	const { run: runGetAndSaveToken } = useDebounceFn(getAndSaveToken, {
-		wait: 1000,
-	});
-
-	useEffect(() => {
-		runGetAndSaveToken();
-	}, [runGetAndSaveToken]);
-
-	useEffect(() => {
-		if (!onMessage) {
-			return;
-		}
-		const unsubscribe = onMessage_(messaging(), onMessage);
-		return () => unsubscribe();
-	}, [onMessage]);
+  useEffect(() => {
+    if (!onMessage) {
+      return;
+    }
+    const unsubscribe = onMessage_(messaging(), onMessage);
+    return () => unsubscribe();
+  }, [onMessage]);
 }

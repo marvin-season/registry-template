@@ -1,4 +1,4 @@
-import { Children, } from './children';
+import { Children } from './children';
 
 export default function Demo() {
 	return (
