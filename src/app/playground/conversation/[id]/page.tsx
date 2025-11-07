@@ -1,8 +1,35 @@
 'use client';
 
+import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 import z from 'zod';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import useChat from '~/registry/hooks/use-chat';
+
+const ConversationList = dynamic(
+  async () => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    return import('@/app/playground/conversation/[id]/_components/list');
+  },
+  {
+    loading: () => (
+      <div className="space-y-2">
+        <Skeleton className="h-4 w-[250px]" />
+        <Skeleton className="h-4 w-[200px]" />
+      </div>
+    ),
+    ssr: false,
+  },
+);
+
+const schema = z.object({
+  id: z.string(),
+  content: z.string(),
+  role: z.string(),
+});
+
+export type TMessage = z.infer<typeof schema>;
 
 function getReadableStream() {
   return new ReadableStream({
@@ -19,12 +46,9 @@ function getReadableStream() {
 }
 
 export default function ConversationPage() {
+  const router = useRouter();
   const { messages, start, stop, resume, pause } = useChat({
-    schema: z.object({
-      id: z.string(),
-      content: z.string(),
-      role: z.enum(['user', 'assistant']),
-    }),
+    schema,
     initialMessages: [
       { id: '1', content: 'Hello, how are you?', role: 'user' },
       { id: '2', content: "I'm fine, thank you!", role: 'assistant' },
@@ -46,20 +70,20 @@ export default function ConversationPage() {
       <div>
         <Button
           onClick={() => {
+            router.push('/playground/conversation');
+          }}
+        >
+          Home
+        </Button>
+        <Button
+          onClick={() => {
             start();
           }}
         >
           Start
         </Button>
       </div>
-      <div>
-        {messages.map((message) => (
-          <div key={message.id}>
-            <p>{message.role}</p>
-            <p>{message.content}</p>
-          </div>
-        ))}
-      </div>
+      <ConversationList messages={messages} />
     </div>
   );
 }
