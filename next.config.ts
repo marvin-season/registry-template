@@ -1,24 +1,20 @@
 import type { NextConfig } from "next";
 import { createMDX } from 'fumadocs-mdx/next';
 
-const isProduction = process.env.NODE_ENV === "production";
+// Use correct check for static build
+const isStatic = process.env.EXPORT_STATIC === "true";
 
-const options: NextConfig = isProduction ? {
+const staticOptions: NextConfig = {
   output: "export", // ./out folder will be deployed to GitHub Pages
   images: {
     unoptimized: true,
   },
   basePath: "/registry-template",
   assetPrefix: "/registry-template/",
-} : {};
-
-const nextConfig: NextConfig = {
-  reactStrictMode: true,
-  ...options,
 };
 
+const options: NextConfig = isStatic ? staticOptions : {};
 
 const withMDX = createMDX({
-
 });
-export default withMDX(nextConfig);
+export default withMDX(options);

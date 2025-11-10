@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:static": "cross-env EXPORT_STATIC=true next build",
     "start": "next start",
     "test": "vitest",
     "test:ui": "vitest --ui",
@@ -46,7 +47,7 @@
     "@types/node": "^20.19.23",
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
-    
+    "cross-env": "^10.1.0",
     "fumadocs-mdx": "^13.0.0",
     "glob": "^11.0.3",
     "jsdom": "^27.0.1",
