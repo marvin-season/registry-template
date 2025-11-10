@@ -1,4 +1,4 @@
-import type { TMessage } from '@/app/playground/conversation/[id]/page';
+import type { TMessage } from '@/app/playground/conversation/[id]/conversation-page-client';
 
 export default function ConversationList({ messages }: { messages: TMessage[] }) {
   return (
