@@ -55,6 +55,7 @@
     "fumadocs-mdx": "^13.0.0",
     "glob": "^11.0.3",
     "jsdom": "^27.0.1",
+    "pm2": "^6.0.13",
     "shiki": "^3.14.0",
     "tailwindcss": "^4.1.16",
     "typescript": "^5.9.3",
