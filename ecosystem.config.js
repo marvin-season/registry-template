@@ -1,10 +1,13 @@
-const path = require("path");
+/**
+ * pm2 ecosystem config
+ * @see https://pm2.keymetrics.io/docs/usage/application-declaration/
+ */
+
 
 module.exports = {
   apps: [
     {
       name: "next-app",
-      cwd: path.resolve(__dirname),
       script: "pnpm",
       args: "start",
       interpreter: "none",

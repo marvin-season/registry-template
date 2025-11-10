@@ -12,5 +12,8 @@
     "lib": "tools",
     "fumadocs": "docs",
     "registry": "repository"
-  }
+  },
+  "cSpell.words": [
+    "shiki"
+  ]
 }
