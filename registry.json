@@ -54,6 +54,19 @@
       ]
     },
     {
+      "name": "task",
+      "type": "registry:lib",
+      "title": "Task Runner",
+      "description": "A utility to run concurrent tasks with retry support.",
+      "files": [
+        {
+          "path": "fumadocs/registry/utils/task/index.ts",
+          "type": "registry:lib",
+          "target": "lib/task/index.ts"
+        }
+      ]
+    },
+    {
       "name": "use-mobile",
       "type": "registry:hook",
       "title": "Use Mobile",
