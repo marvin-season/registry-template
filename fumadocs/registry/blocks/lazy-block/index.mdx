@@ -1,0 +1,32 @@
+---
+title: Lazy Block
+description: A lazy block component that renders its children once it becomes visible in the viewport.
+---
+
+import Demo from './demo';
+
+## Installation
+
+<InstallCommand pkgName="lazy-block" />
+
+**Notice**: 
+Change import path `import { useIntersectionObserver } from '~/registry/hooks/use-intersection-observer';` 
+to actual path `import { useIntersectionObserver } from '@/hooks/use-intersection-observer';`.
+
+## Preview
+
+<PreviewCode pkgName="lazy-block">
+  <Demo />
+</PreviewCode>
+
+## API Reference
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` | `React.ReactNode` | – | 内容在 LazyBlock 进入视口时渲染。 |
+| `className` | `string` | – | 追加到容器上的自定义类名。 |
+| `options` | `IntersectionObserverInit` | `{ root: null, rootMargin: "-20px", threshold: 0 }` | 传递给 `IntersectionObserver` 的配置。 |
+| `seo` | `ReactNode` | – | 未进入视口时用于 SEO 的备用内容，会占位但保持透明。 |
+| `minHeight` | `string` | `"1px"` | 在真实内容渲染前用于占位的最小高度。 |
+
+

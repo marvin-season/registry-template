@@ -115,6 +115,22 @@
       ]
     },
     {
+      "name": "lazy-block",
+      "type": "registry:component",
+      "title": "Lazy Block",
+      "description": "A block component that lazily renders its children when it enters the viewport.",
+      "files": [
+        {
+          "path": "fumadocs/registry/blocks/lazy-block/lazy-block.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "fumadocs/registry/hooks/use-intersection-observer/index.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
       "name": "complex-component",
       "type": "registry:component",
       "title": "Complex Component",
