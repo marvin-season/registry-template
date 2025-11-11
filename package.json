@@ -7,6 +7,11 @@
     "build": "next build",
     "build:static": "cross-env EXPORT_STATIC=true next build",
     "start": "next start",
+    "pm2:start": "pm2 start ecosystem.config.js",
+    "pm2:reload": "pm2 reload ecosystem.config.js",
+    "pm2:stop": "pm2 stop next-app",
+    "pm2:delete": "pm2 delete next-app",
+    "docker:build": "chmod +x scripts/docker.sh && scripts/docker.sh",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
@@ -16,11 +21,7 @@
     "format": "biome format --write",
     "lint": "biome lint --write",
     "lint:unsafe": "biome lint --write --unsafe",
-    "check": "biome check",
-    "pm2:start": "pm2 start ecosystem.config.js",
-    "pm2:reload": "pm2 reload ecosystem.config.js",
-    "pm2:stop": "pm2 stop next-app",
-    "pm2:delete": "pm2 delete next-app"
+    "check": "biome check"
   },
   "dependencies": {
     "@radix-ui/react-collapsible": "^1.1.12",
