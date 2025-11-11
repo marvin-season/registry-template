@@ -5,17 +5,13 @@ import { ConcurrentRunner } from './index';
 describe('ConcurrentRunner', () => {
   test('执行多个任务并保持结果顺序', async () => {
     const runner = new ConcurrentRunner({ concurrency: 2, retryDelay: 10 });
-    const tasks = [
-      vi.fn(async () => 'task 1'),
-      vi.fn(async () => 'task 2'),
-      vi.fn(async () => 'task 3'),
-    ];
+    const tasks = [vi.fn(async () => 'task 1'), vi.fn(async () => 'task 2'), vi.fn(async () => 'task 3')];
 
     const results = await runner.run(tasks);
     console.log('results', results);
     expect(results).toEqual(['task 1', 'task 2', 'task 3']);
     tasks.forEach((task) => {
-      expect(task).toHaveBeenCalledTimes(1)
+      expect(task).toHaveBeenCalledTimes(1);
     });
   });
 
