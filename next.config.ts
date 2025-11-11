@@ -13,7 +13,9 @@ const staticOptions: NextConfig = {
   assetPrefix: "/registry-template/",
 };
 
-const options: NextConfig = isStatic ? staticOptions : {};
+const options: NextConfig = isStatic ? staticOptions : {
+  output: "standalone",
+};
 
 const withMDX = createMDX({
 });
