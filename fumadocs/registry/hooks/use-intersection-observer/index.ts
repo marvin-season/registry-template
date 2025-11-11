@@ -17,10 +17,13 @@ export const useIntersectionObserver = <T extends Element = HTMLElement>(options
       return;
     }
 
-    const observer = new IntersectionObserver(([entry]) => {
-      setIsIntersecting(entry.isIntersecting);
-      setEntry(entry);
-    }, options);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsIntersecting(entry.isIntersecting);
+        setEntry(entry);
+      },
+      { root: options.root, rootMargin: options.rootMargin, threshold: options.threshold },
+    );
 
     observer.observe(element);
 
@@ -28,7 +31,7 @@ export const useIntersectionObserver = <T extends Element = HTMLElement>(options
       observer.unobserve(element);
       observer.disconnect();
     };
-  }, [options]);
+  }, [options.root, options.rootMargin, options.threshold]);
 
   return { ref, isIntersecting, entry };
 };
