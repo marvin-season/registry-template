@@ -1,44 +1,39 @@
-import { z } from 'zod';
-
-const schema = z.object({
-  data: z.any(),
-  code: z.number(),
-  message: z.string(),
-});
-type ExtraConfig = {
-  maxRetries?: number;
-};
-
-interface RequestJSONExtra extends ExtraConfig {
-  type?: undefined;
+export class RequestClient {
+  constructor(private readonly baseUrl: string) {}
+  get<T>(url: string) {
+    return request<T>(`${this.baseUrl}${url}`);
+  }
+  post<T>(url: string, data: any) {
+    return request<T>(`${this.baseUrl}${url}`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+  put<T>(url: string, data: any) {
+    return request<T>(`${this.baseUrl}${url}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+  }
+  delete<T>(url: string) {
+    return request<T>(`${this.baseUrl}${url}`, {
+      method: 'DELETE',
+    });
+  }
 }
 
-interface RequestStreamExtra extends ExtraConfig {
-  type: 'stream';
-}
+export const requestClient = new RequestClient('https://api.restful-api.dev');
 
-type RequestExtraConfig = RequestJSONExtra | RequestStreamExtra;
-
-export function request<T = Uint8Array>(
-  url: string,
-  requestInit: RequestInit | undefined,
-  extraConfig: RequestStreamExtra,
-): Promise<ReadableStream<T> | null>;
-
-export function request<T>(url: string, requestInit?: RequestInit, extraConfig?: RequestJSONExtra): Promise<T>;
-
-export async function request<T>(url: string, requestInit: RequestInit = {}, extraConfig: RequestExtraConfig = {}) {
+export async function request<T>(url: string, requestInit: RequestInit = {}) {
   const {
-    method = 'GET',
     headers = {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
     ...rest
   } = requestInit;
 
-  const { type } = extraConfig;
   const response = await fetch(url, {
-    method,
     headers,
     ...rest,
   });
@@ -47,14 +42,6 @@ export async function request<T>(url: string, requestInit: RequestInit = {}, ext
     throw new Error(`Request failed with status ${response.status}`);
   }
 
-  if (type === 'stream') {
-    return response.body;
-  }
-
   const json = await response.json();
-  const { success, data } = schema.safeParse(json);
-  if (!success) {
-    throw new Error(`Request failed with status ${response.status}`);
-  }
-  return data.data as T;
+  return json as T;
 }
