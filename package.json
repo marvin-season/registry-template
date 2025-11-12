@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "build:static": "cross-env EXPORT_STATIC=true next build",
+    "build": "pnpm run registry:build && next build",
+    "build:static": "cross-env EXPORT_STATIC=true pnpm run registry:build && next build",
     "start": "next start",
     "pm2:start": "pm2 start ecosystem.config.js",
     "pm2:reload": "pm2 reload ecosystem.config.js",
