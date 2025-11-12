@@ -4,9 +4,10 @@ import { DynamicCodeBlock } from 'fumadocs-ui/components/dynamic-codeblock';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { useEffect, useState } from 'react';
 
-const isProduction = typeof process !== 'undefined' && process.env.NODE_ENV === 'production';
+const isStatic = typeof process !== 'undefined' && process.env.EXPORT_STATIC === 'true';
 
-const baseURL = isProduction ? '/registry-template' : '';
+const baseURL = isStatic ? '/registry-template' : '';
+
 export function InstallCommand(props: { pkgName: string }) {
   const { pkgName } = props;
   const [domain, setDomain] = useState<string>('');
