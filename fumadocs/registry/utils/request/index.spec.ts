@@ -125,3 +125,68 @@ function reduceByChatId(notifications: Notification[]): Record<string, Notificat
     {} as Record<string, Notification[]>,
   );
 }
+
+function createStruct() {
+  const array: Notification[] = [];
+
+  return {
+    push: (notification: Notification) => {
+      const index = array.findIndex((n) => n.data.taskId === notification.data.taskId);
+      if (index !== -1) {
+        if (array[index].data.event === 'pending') {
+          array[index] = notification;
+        }
+      } else {
+        array.push(notification);
+      }
+    },
+    get: () => array,
+    filter: (predicate: (notification: Notification) => boolean) => {
+      return array.filter(predicate);
+    },
+    clear: () => {
+      array.splice(0, array.length);
+    },
+  };
+}
+
+describe('struct', () => {
+  test('should return a json object', async () => {
+    const stack = createStruct();
+    stack.push({
+      title: 'Notification 1',
+      data: {
+        taskId: 'a',
+        chatId: '1',
+        event: 'success',
+      },
+    });
+    stack.push({
+      title: 'Notification 1',
+      data: {
+        taskId: 'a',
+        chatId: '1',
+        event: 'pending',
+      },
+    });
+    stack.push({
+      title: 'Notification 1',
+      data: {
+        taskId: 'b',
+        chatId: '1',
+        event: 'pending',
+      },
+    });
+    stack.push({
+      title: 'Notification 1',
+      data: {
+        taskId: 'c',
+        chatId: '2',
+        event: 'pending',
+      },
+    });
+
+    console.log(stack.get());
+    console.log(stack.filter((n) => n.data.chatId === '2'));
+  });
+});
