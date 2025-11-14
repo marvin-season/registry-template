@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-export default function CircleShimmer(props: { colorSteps?: string[]; text?: string; }) {
+export default function CircleShimmer(props: { colorSteps?: string[]; text?: string }) {
   const {
     colorSteps = ['#008aff', '#ff8a00', '#fff6d4', '#008aff', '#00ff8a', '#ff8a00'],
     text = "Hello! I'm Marvin, a developer who is passionate about web.",

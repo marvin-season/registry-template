@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { GitTimeline } from '@/components/fumadocs-mdx-component/git-timeline';
 import { getMDXComponents } from '@/lib/mdx-components';
-import { blogSource, } from '@/lib/source';
+import { blogSource } from '@/lib/source';
 
 export default async function Page(props: PageProps<'/blog/[[...slug]]'>) {
   const params = await props.params;
@@ -61,6 +61,5 @@ export async function generateMetadata(props: PageProps<'/blog/[[...slug]]'>): P
   return {
     title: page.data.title,
     description: page.data.description,
-
   };
 }
