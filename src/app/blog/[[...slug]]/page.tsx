@@ -9,7 +9,7 @@ import { blogSource } from '@/lib/source';
 
 export default async function Page(props: PageProps<'/blog/[[...slug]]'>) {
   const params = await props.params;
-  console.debug('params', params);
+
   const page = blogSource.getPage(params.slug);
   if (!page) notFound();
   const MDX = page.data.body;

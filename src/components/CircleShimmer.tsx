@@ -8,7 +8,7 @@ export default function CircleShimmer(props: { colorSteps?: string[]; text?: str
 
   const stops = useMemo(() => {
     return colorSteps.map((color, index) => {
-      return <stop key={index} offset={`${(index * 100) / colorSteps.length}%`} stop-color={color} />;
+      return <stop key={index} offset={`${(index * 100) / colorSteps.length}%`} stopColor={color} />;
     });
   }, [colorSteps]);
 
@@ -38,9 +38,9 @@ export default function CircleShimmer(props: { colorSteps?: string[]; text?: str
         </linearGradient>
       </defs>
 
-      <circle cx="120" cy="120" r="104" stroke="#996" stroke-width="0" fill="none" />
+      <circle cx="120" cy="120" r="104" stroke="#996" strokeWidth="0" fill="none" />
 
-      <text font-size="24" fontWeight="semibold" fill="url(#shineGradient)" font-family="sans-serif">
+      <text fontSize="24" fontWeight="semibold" fill="url(#shineGradient)" fontFamily="sans-serif">
         <textPath href="#circlePath" startOffset="0%">
           {text}
         </textPath>
