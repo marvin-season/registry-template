@@ -1,0 +1,30 @@
+---
+title: How Browsers Work
+description: "简要梳理浏览器渲染流程，从输入 URL 到最终呈现。"
+author: Marvin
+---
+
+## Reference
+
+[How Browsers Work - MDN](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/How_browsers_work)
+
+## Conclusion
+
+关键步骤概览：
+
+1. **用户输入**：在地址栏输入 URL。
+2. **DNS 查询**：解析域名获取 IP。
+3. **TCP 连接**：浏览器与服务器建立 TCP 连接。
+4. **HTTP 请求**：浏览器发送资源请求。
+5. **服务器响应**：返回 HTML、CSS、JavaScript、图片等资源。
+6. **渲染**：解析 HTML 构建 DOM，解析 CSS 生成 CSSOM，合并形成渲染树，布局计算后执行绘制。
+
+渲染的细化步骤：
+
+- **HTML 解析**：生成 DOM。
+- **CSS 解析**：生成 CSSOM。
+- **样式计算**：合并 DOM 与 CSSOM 得到渲染树。
+- **布局（Layout）**：计算元素尺寸与位置。
+- **绘制（Paint）**：将像素绘制到屏幕。
+- **合成（Composite）**：组合图层输出最终画面。
+

@@ -1,0 +1,80 @@
+---
+title: Zodv4-Form
+description: "基于 Zod v4 的无头表单方案，涵盖动态渲染与自定义组件扩展。"
+author: Marvin
+---
+
+> 更新于 2025-10-16。包体为私有实验性实现，此处记录设计思路。
+
+## What
+
+Zodv4-Form 是一个基于 Zod v4 的无头表单库。
+
+```bash
+npm install zodv4-form
+```
+
+## How
+
+借助 Zod v4 校验表单数据，整体流程为：
+
+```
+Zod Schema -> Zod JSON Schema -> Dynamic Form Component
+```
+
+## Features
+
+- ✅ 表单数据校验
+- ✅ 自动、动态生成表单组件
+- ✅ 支持自定义组件
+- ✅ 内置字符串组件
+
+## Example
+
+```tsx
+import { createRoot } from "react-dom/client";
+import { defineComponents, ZodV4Form } from "./ZodV4Form";
+import { z } from "zod";
+
+const schema = z.object({
+    name: z.string().min(1),
+    email: z.email(),
+    age: z.number().min(18),
+});
+const components = defineComponents({
+    number: (props) => <input type="number" {...props} />,
+});
+createRoot(document.getElementById("root") as HTMLElement)?.render(
+    <ZodV4Form
+        schema={schema}
+        onSubmit={console.log}
+        components={components}
+    />,
+);
+```
+
+## Customize
+
+可以通过 `meta.component` 或 `meta.type` 自定义渲染的组件，本质上是：
+
+```ts
+const component = fieldJsonSchema.component || fieldJsonSchema.type;
+```
+
+```tsx
+const components = defineComponents({
+    "custom-component": (props) => <input type="number" {...props} />,
+});
+
+const schema = z.object({
+    level: z
+        .enum(["level1", "level2", "level3"])
+        .meta({
+            label: "Level",
+            description: "The level of the user",
+            component: "custom-component", // or type: "custom-component"
+        })
+        .default("level1"),
+});
+```
+

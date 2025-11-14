@@ -1,0 +1,37 @@
+---
+title: LazyLoad
+description: "结合 IntersectionObserver 与浏览器原生能力实现懒加载与流式渲染。"
+author: Marvin
+---
+
+> 更新于 2025-02-01。原文 Demo 使用自研组件，迁移时保留核心代码示例。
+
+## 参考资料
+
+- [Lazy loading - MDN](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Lazy_loading)
+
+## Intersection Observer API
+
+借助 `IntersectionObserver` 监听即将进入视口的 DOM，当元素进入视口时加载更多内容。
+
+```tsx
+const observer = new IntersectionObserver((entries, observer) => {
+    if ('discover') {
+        // load more
+    }
+});
+
+observer.observe(dom as HTMLElement);
+```
+
+## Images and iframes
+
+以图片为例，打开控制台筛选网络中的图片，滚动视口可观察懒加载过程。
+
+`loading="lazy"`
+
+```html
+<img loading="lazy" src="image.jpg" alt="..." />
+<iframe loading="lazy" src="video-player.html" title="..."></iframe>
+```
+

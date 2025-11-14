@@ -1,0 +1,51 @@
+---
+title: React Think
+description: "从数据驱动的角度理解 React 架构与调度。"
+author: Marvin
+---
+
+> 更新于 2024-02-04。
+
+Web 开发的本质是将 **数据** 呈现到页面，平滑的交互带来良好的用户体验（User Perceived Performance），性能优化亦围绕此展开。
+
+## 原生 JS
+
+如果不使用 React，可以使用原生 JS 实现交互，例如：
+
+```js
+const addbtn = document.getElementById("add");
+const counter = document.getElementById("counter");
+
+addbtn.onclick = function() {
+    // some business logic
+  counter.innerText = parseInt(counter.innerText) + 1;
+};
+```
+
+可以看到 **数据** 与 **UI** 耦合紧密，业务代码难以维护，频繁操作 DOM 也会带来性能问题。
+
+### 如何优化？
+
+不直接操作 DOM，而是在 DOM 与数据之间增加一层。当需要更新数据时，通知这一层，由其负责更新逻辑与性能优化。React 正是扮演了这样的角色。
+
+## React 如何工作
+
+- [React Fiber Architecture](https://github.com/acdlite/react-fiber-architecture)
+- [React Concurrent Demo](https://jser.pro/ddir/rie?reactVersion=18.3.1&snippetKey=hq8jm2ylzb9u8eh468)
+
+React 架构：`Scheduler -> Reconciler -> Renderer`
+
+```jsx
+const Counter = () => {
+    const [counter, setCounter] = useState(0);
+    return <>
+        <span>{counter}</span>
+        <button onClick={() => setCounter(prev => prev + 1)}>add</button>
+    </>
+}
+```
+
+调用 `setCounter` 触发更新任务，Scheduler 根据优先级调度，将任务交给 Reconciler；Reconciler 负责找出变化的部分交由 Renderer 渲染。
+
+Reconciler 的关键在于 **双缓存机制**：初次渲染生成 Fiber 树，更新时克隆原树，计算 diff 后替换，尽量减少真实 DOM 变更。
+

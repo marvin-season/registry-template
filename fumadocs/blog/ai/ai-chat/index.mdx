@@ -1,0 +1,234 @@
+---
+title: AI Chat
+description: "梳理面向流式对话的核心数据结构与交互模块。"
+author: Marvin
+---
+
+> 更新于 2024-02-06。原文含有交互式 Demo，迁移时暂未保留，可在旧仓库 `danny-website` 中查看 React 实现。
+
+## 概要
+
+核心数据结构：消息列表（`messages`）
+
+核心操作：调用模型接口，生成消息
+
+次要操作：复制、引用、重新生成、编辑、参考附件选择
+
+UI：聚合上述操作以及数据
+
+```tsx
+class CoreUI {
+    useMessage(){
+        // connect to message
+        return this
+    }
+    useHandle(){
+        // connect to handle
+        return this
+    }
+    useChat(){
+        // connect to AI
+        return this
+    }
+    render(){
+        // render ui
+        return <></>
+    }
+}
+new CoreUI().useMessage().useHandle().useChat().render();
+```
+
+## Concept
+
+### S-S-E
+
+Server-Sent-Event：数据从服务器流向客户端  
+格式：`tag:string`
+
+例如：
+
+```
+data: "{ name: 'marvin', age: 20 }"
+```
+
+在 SSE 中数据以固定的格式传输到客户端，在使用之前客户端或许需要先进行解析。
+
+### 解析流式消息
+
+可以直接使用 [fetch-event-source](https://github.com/Azure/fetch-event-source) 来处理 SSE 格式的数据，其核心原理类似下面：
+
+```ts
+const textDecoder = new TextDecoder()
+export async function* SSEMessageGenerator<T>(stream: ReadableStream) {
+    if (!stream) {
+        return
+    }
+
+    // @ts-ignore ReadableStream is not iterable in TypeScript
+    for await (const chunk of stream) {
+        const sse_chunk = textDecoder.decode(chunk); // may be multi-line
+        let rest_str = ""
+        // 使用 for...of 替代 forEach，确保 yield 在生成器体内
+        for (const line of sse_chunk.split(/\n+/)) {
+            const json_str = line.replace(/data:\s*/, '').trim();
+            if(json_str.length > 0) {
+                try {
+                    const message = JSON.parse(rest_str + json_str);
+                    rest_str = "";
+                    yield message as T; // 在生成器内 yield 消息
+                } catch (e) {
+                    rest_str += json_str
+                    console.log("e => ", { e, rest_str });
+                }
+            }
+
+        }
+
+    }
+}
+
+const response = await fetch('');
+for await (const message of SSEMessageGenerator<{ id: string }>(response.body)) {
+    console.log(message)
+}
+```
+
+`SSEMessageGenerator` 的作用是将数据从 `ReadableStream` 中解析出来，并返回一个生成器。可以通过迭代这个生成器来获取更加详细的数据。
+
+## Design
+
+### Message
+
+```typescript
+class Message {
+    id: string;
+    content: string
+}
+class MessageManager {
+    #messages: Message[]
+    appendMessage(message: Message){
+    }
+    replaceMessage(oldMessage: Message, message: Message){
+    }
+    updateMessage(message: Message){
+    }
+    removeMessage(message: Message){
+    }
+    getMessages(){
+        return [] as Message[]
+    }
+    copyMessage(message: Message){}
+    shareMessage(message: Message){}
+    citeMessage(message: Message){}
+}
+```
+
+转成 React Hook：
+
+```tsx
+import {useState} from "react";
+
+interface Message {
+    id: string;
+    content: string
+}
+const useMessage = () => {
+    const [messages, setMessages] = useState<Message[]>();
+
+    /** useCallback is not necessary in react 19 */
+    function appendMessage(message: Message){
+        setMessages(prev => prev.concat(message));
+    }
+
+    function getMessages(){
+        return messages;
+    }
+    return {
+        messages,
+        appendMessage,
+        getMessages
+    }
+}
+```
+
+### Handle
+
+```tsx
+import {useState} from "react";
+
+class Message {
+    id: string;
+    content: string
+}
+
+export default function () {
+    const [citeMessage, setCiteMessage] = useState<Message>();
+    const [loading, setLoading] = useState(false)
+
+    async function* onRe(message: Message) {
+        for (const msg of message.content) {
+            yield {
+                id: message.id,
+                content: msg
+            }
+        }
+    }
+
+    function onCopy(message: Message) {
+        navigator.clipboard.writeText(message.content).then(() => {
+            alert('copied to clipboard')
+        });
+    }
+
+    function onCite(message: Message) {
+        setCiteMessage(prev => {
+            if (prev?.id === message.id) {
+                return undefined
+            }
+            return message
+        });
+    }
+
+    return {
+        onRe,
+        onCopy,
+        onCite,
+        setLoading,
+        loading,
+        citeMessage,
+    }
+}
+```
+
+### AI
+
+```tsx
+export default function useChat() {
+    async function* send(value: string, {} = {}) {
+        yield 'hello'
+        yield 'world'
+        yield '!'
+    }
+    return {
+        send
+    }
+}
+```
+
+### UI
+
+```tsx
+// @ts-ignore
+import { useMessage, useHandle, useChat } from 'your-components'
+
+function Chat(){
+    const {  messages } = useMessage();
+    const {  copy } = useHandle();
+    const {  send } = useChat();
+
+    return <>
+        Your Ui
+    </>
+}
+```
+

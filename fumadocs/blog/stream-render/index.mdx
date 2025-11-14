@@ -1,0 +1,111 @@
+---
+title: 流数据渲染优化
+description: "结合懒加载与增量渲染优化流式数据体验。"
+author: Marvin
+---
+
+> 更新于 2024-06-06。原文附带 React Demo，此处保留核心原理与伪代码。
+
+## 切入点
+
+如何对流式数据做优化以提升渲染性能，可从两点切入：
+
+**懒加载渲染**：可视区外的内容暂不渲染，滚动到可视区时再渲染。  
+*注意：需要缓冲区防止给用户造成流暂停假象。*
+
+**增量式渲染**：已渲染到页面的数据不重复渲染，只渲染新增内容。
+
+## 原理详解
+
+### 懒加载渲染伪代码
+
+```js
+let content = '';
+let buffer = ''
+function updateState(chunk) {
+    buffer = chunk;
+    if('in view'){
+        content += buffer;
+        buffer = ''
+    } else if("out of view") {
+        buffer += chunk
+    }
+    requestAnimationFrame(updateState)
+}
+
+for (const chunk of "hello world") {
+  updateState(chunk)
+}
+```
+
+### 增量式更新核心代码
+
+```tsx
+import { useCallback, useRef, useEffect } from "react";
+import { sleep } from "aio-tool";
+
+export enum PromiseState {
+    Resume = 'resume',
+    Suspense = 'suspense',
+    Cancel = 'cancel'
+}
+export default function useIncreasingRender({
+    onContinue,
+}: {
+    onContinue?: (value: string) => void;
+}) {
+    // Ref to control the consumer flow
+    const promiseRef = useRef<PromiseState | Function>(PromiseState.Cancel);
+    // Buffer for accumulating incoming characters
+    const remainRef = useRef<string>("");
+    // Store the requestAnimationFrame handle so it can be canceled when needed
+    const renderLoopRef = useRef<number | null>(null);
+
+    const updater = useCallback(async () => {
+        if (promiseRef.current === PromiseState.Resume) {
+            onContinue?.(remainRef.current);
+            remainRef.current = "";
+        } else if (promiseRef.current === PromiseState.Suspense) {
+            // Wait for an external signal to resume
+            await new Promise((resolve) => {
+                promiseRef.current = () => {
+                    resolve(true);
+                };
+            });
+        }
+        // Schedule next iteration in the next animation frame
+        renderLoopRef.current = requestAnimationFrame(updater);
+    }, [onContinue]);
+
+    const cancel = useCallback(() => {
+        if (renderLoopRef.current !== null) {
+            cancelAnimationFrame(renderLoopRef.current);
+            renderLoopRef.current = null;
+        }
+        remainRef.current = "";
+        promiseRef.current = PromiseState.Cancel;
+    }, []);
+
+    const start = useCallback(() => {
+        promiseRef.current = PromiseState.Resume;
+        updater().then();
+    }, [updater]);
+
+    const consume = useCallback(async (value: string) => {
+        if (promiseRef.current === PromiseState.Cancel) return true;
+        remainRef.current += value;
+        await sleep(0);
+    }, []);
+
+    useEffect(() => cancel, [cancel]);
+
+    return {
+        start,
+        cancel,
+        consume,
+        promiseRef,
+        remainRef,
+    };
+}
+```
+

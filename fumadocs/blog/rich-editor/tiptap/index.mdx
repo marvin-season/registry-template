@@ -1,0 +1,94 @@
+---
+title: Tiptap Practise
+description: "基于 Tiptap 的无服务端富文本编辑器实践，聚焦自定义节点。"
+author: Marvin
+---
+
+> 更新于 2025-02-05。
+
+## Core Concept
+
+- **Editor**：核心编辑器实例
+  - **Node**：内容节点
+  - **Mark**：文本格式
+  - **Extension**：功能扩展
+- **Schema**：文档结构
+- **Commands**：操作编辑器的命令
+- **Plugins**：扩展编辑器自定义能力
+- **State**：当前文档状态
+
+## Design
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Editor
+    participant CustomNode
+
+    Note over Editor: 初始化文本 "name: {{name}}, age: {{age}}"
+    Note over Editor: 自定义节点匹配规则
+    Editor-->>Editor: 反序列化为 JSON
+    Editor-->>CustomNode: 自定义节点处理
+    CustomNode-->>CustomNode: 自定义渲染逻辑
+    CustomNode -->>Editor: 渲染自定义组件
+    Editor->>User: 渲染文本
+    User->>Editor: 修改文本
+    Editor-->>Editor: 更新 JSON
+    Editor->>User: 渲染文本
+    User->>Editor: 保存文本
+
+    Editor-->>User: 序列化为 文本信息
+    Note over Editor: 自定义节点匹配规则
+```
+
+## What
+
+一个自定义富文本编辑器。
+
+## How
+
+通过自定义节点实现自定义渲染。
+
+## Core Code
+
+```tsx
+const View = ({ node, updateAttributes }: NodeViewProps) => {
+    const { type, value, options, placeholder } = node.attrs;
+
+    const handleInput = (e: React.FormEvent) => {
+        const inputElement = e.target as HTMLInputElement;
+        const newValue = inputElement.value || "";
+        updateAttributes({ value: newValue });
+    };
+
+    // dynamic width of input
+    const count = caculteWidth(value ? value : placeholder);
+
+    return (
+        <NodeViewWrapper as="span">
+            <NodeViewContent
+                as={"input"}
+                style={{ width: `${count}rem` }}
+                contentEditable={false}
+                onInput={handleInput}
+                placeholder={placeholder}
+                defaultValue={value}
+            ></NodeViewContent>
+        </NodeViewWrapper>
+    );
+};
+
+const InlinePlaceholder = Node.create<InlinePlaceholderAttributes>({
+    renderHTML({ HTMLAttributes, node }) {
+        const attrs = mergeAttributes(
+            this.options.HTMLAttributes || {},
+            HTMLAttributes,
+        );
+        return ["span", attrs, 0]; // 0 or child of span
+    },
+    addNodeView() {
+        return ReactNodeViewRenderer(View);
+    },
+});
+```
+

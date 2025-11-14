@@ -1,0 +1,40 @@
+---
+title: Agent 消息处理
+description: "分析 Agent 消息格式，并给出富文本渲染组件的设计。"
+author: Marvin
+---
+
+> 本文原含可执行示例，迁移至 Fumadocs 后仅保留核心代码与思路。
+
+## 细化处理单个消息
+
+```ts
+type Content =
+    | {
+          type: 'text'
+          text: string
+      }
+    | {
+          type: 'agent'
+          agent: string // custom html tag, just like <agent attr="attr"></agent>
+      }
+```
+
+## 映射富文本组件
+
+Markdown 也是富文本的一种。
+
+```ts
+const components: Components & {
+    agent?: React.ElementType
+} = {
+    agent: ({ node, ...props }) => <Agent {...props} />,
+}
+
+<Markdown rehypePlugins={[rehypeRaw]} components={components}>
+    {contentValue}
+</Markdown>
+```
+
+`rehypeRaw` 允许解析 HTML，`components` 允许自定义组件。
+

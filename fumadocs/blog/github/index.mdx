@@ -1,0 +1,37 @@
+---
+title: GitHub Pages 托管
+description: "总结 GitHub Pages 与 Actions 的部署流程与常见问题。"
+author: Marvin
+---
+
+> 更新于 2023-02-26。
+
+## 参考
+
+- [GitHub Pages 配置](https://github.com/marvin-season/aio-tool/settings/pages)
+- [GitHub Actions 官方文档](https://docs.github.com/actions)
+- [GitHub Pages 域名配置指南](https://docs.github.com/pages/configuring-a-custom-domain-for-your-github-pages-site)
+
+## 托管静态资源到 GitHub Pages
+
+- 通过 GitHub Action，从 action 产物部署
+- 推送到 `gh-pages` 分支，从分支部署
+
+## 两种部署模式对比
+
+- **分支推送模式**：生成 `gh-pages` 分支，GitHub 自动从该分支拉取内容
+- **直接部署模式**：通过 `upload-pages-artifact` + `deploy-pages` 直接托管，无需维护分支
+
+## 常见问题排查
+
+`Branch "main" is not allowed to deploy due to environment protection rules`
+
+- 进入仓库设置：Settings → Environments → `github-pages`
+- 修改 Deployment branches：允许 `main` 分支
+- 关闭 Required reviewers 或添加审批者（如有必要）
+
+`部署后显示 404`
+
+- 检查构建路径是否正确（如 Docusaurus 默认输出到 `build` 文件夹）
+- 验证仓库设置的 Pages 来源：Settings → Pages → Build and deployment → Branch
+

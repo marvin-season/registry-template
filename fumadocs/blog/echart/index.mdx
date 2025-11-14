@@ -1,0 +1,286 @@
+---
+title: Echart
+description: "总结使用 ECharts 构建多图表数据看板的要点。"
+author: Marvin
+---
+
+> 更新于 2024-01-08。以 React + ECharts 为例整理图表数据与样式分离的实践。
+
+## Echart React
+
+对于绘制图表，提供合适的 `options` 给 ECharts 即可，但数据往往来自接口。需要在样式配置与数据之间做好抽象。
+
+假设有如下封装好的组件：
+
+```jsx
+<EchartReact options={options} {...{ others }}></EchartReact>
+```
+
+### 基本配置
+
+一个基本的折线图配置：
+
+```js
+// 图表的基本配置
+export const baseOption = {
+  grid: {
+    top: 8,
+    left: 20,
+    bottom: 18,
+    right: 40,
+    containLabel: true,
+  },
+  tooltip: {
+    trigger: "axis",
+    formatter: "{b}: {c}",
+    backgroundColor: "#FFFFFF",
+    borderColor: "#F6F9FF",
+    textStyle: {
+      color: "#344054",
+      fontSize: 12,
+    },
+  },
+  xAxis: {
+    type: "category",
+    boundaryGap: false,
+    data: [],
+    axisLine: {
+      show: true,
+      lineStyle: {
+        color: "#9CA3AF",
+      },
+    },
+    axisTick: {
+      show: false,
+    },
+    axisLabel: {
+      show: true,
+      formatter(value, index) {
+        let formatValue = value;
+        formatValue = moment(value).format("MMM D, YYYY");
+        return formatValue;
+      },
+      padding: [6, 0, 0, 0],
+    },
+  },
+  yAxis: {
+    type: "value",
+    axisLine: {
+      symbol: "arrow",
+      lineStyle: {
+        color: "#9CA3AF",
+      },
+    },
+    axisLabel: {
+      show: true,
+      padding: [0, 16, 0, 0],
+    },
+  },
+  series: [
+    {
+      name: "demo",
+      data: [],
+      type: "line",
+      symbolSize: 4,
+      itemStyle: {
+        color: "auto",
+        borderGap: "round",
+      },
+      lineStyle: {
+        color: "#276DDC",
+        width: 1,
+      },
+      areaStyle: {
+        color: {
+          type: "linear",
+          x: 0,
+          y: 0,
+          x2: 0,
+          y2: 1,
+          colorStops: [
+            {
+              offset: 0,
+              color: "rgba(234, 242, 255, 0.6)",
+            },
+            {
+              offset: 1,
+              color: "rgba(234, 242, 255, 0.2)",
+            },
+          ],
+          global: false,
+        },
+      },
+      emphasis: {
+        focus: "series",
+      },
+    },
+  ],
+};
+```
+
+如果只需要一个图表，将 `data` 赋值为接口返回的结果即可。如果有多个同类型、不同主题的图表，可以定义一个数组：
+
+### 图表数据类型约束
+
+```ts
+interface EchartData {
+    options: 'any option of echart'
+    ...{
+        attr: 'another attr of your chart'
+    }
+}
+
+const echartDataArray: EchartData[] = []
+```
+
+### 图表数据与预定义
+
+预定义好各个图表的样式，除了数据在后续操作中注入：
+
+```ts
+const echartDataArray: EchartData[] = [
+    {
+        options: merge(cloneDeep(baseOption), {
+            series: [
+                {
+                    itemStyle: {
+                        color: '#10B981',
+                    },
+                }
+            ]
+        })
+    }
+]
+```
+
+渲染前，需要将接口数据注入数组对应的 `data` 中。要注意合并数据的操作。
+
+`lodash.merge` 会忽略 `undefined` 等空值的合并，且数组合并存在重复元素的问题，所以自行实现 `merge` 函数更稳妥。
+
+### 合适的合并数据方法
+
+```ts
+export const merge = (target: any, source: any) => {
+  Object.keys(source).forEach((key) => {
+    if (Array.isArray(source[key])) {
+      // TODO: 数组需要迭代递归，这里目前直接替换
+      target[key] = source[key];
+    } else if (typeof source[key] === "object") {
+      target[key] = merge(target[key], source[key]);
+    } else {
+      target[key] = source[key];
+    }
+  });
+  return target;
+};
+```
+
+### 对齐数据
+
+拿到接口数据后，可以将数据缝合到预定义的 `echartDataArray` 中：
+
+```ts
+echartDataArray.forEach((item, index) => {
+  const { options, value } = getEChartData(data, item);
+
+  // 合并属性
+  const mergedOptions = merge(cloneDeep(item.options), options);
+
+  newData.push({
+    ...item,
+    options: mergedOptions,
+    value,
+  });
+});
+```
+
+接口数据和预定义数据之间需要做映射，以便正确缝合：
+
+```tsx
+export const getEChartData = (data: any, item: AnalyseEchartProps, isRight: boolean) => {
+  const options = {
+    xAxis: {
+      data: [],
+    },
+    series: [{ data: [] }],
+  };
+  let value: JSX.Element = <></>;
+
+  switch (item.id) {
+    case 'ChartA': 
+        value = <></>
+        options.xAxis.data = ['xxx']
+        break;
+    case 'ChartB': break;
+    case 'ChartC': break;
+    default: break
+  }
+  return { options, value };
+};
+```
+
+> 提示：对齐数据需要预定义数据映射。
+
+```js
+// 图表字段映射（前端/后端） => 用于数据转换，哪个字段是图表数据
+export const EchartFieldMap = {
+  MessageNumber: 'allMsgCount',
+  ActiveUsersNumber: 'activeUserCount',
+  AvgInteractiveNumber: 'averageSessionCount',
+  TokenSpeed: 'tokensPerSecond',
+  FeeCost: 'tokenCounts',
+};
+// 统计图表中的某个 key 的映射 => 具体图表数据取哪个值
+export const EchartKeyMap = {
+  allMsgCount: ['conversation_count'],
+  activeUserCount: ['terminal_count'],
+  averageSessionCount: ['interactions'],
+  tokensPerSecond: ['tps'],
+  tokenCosts: ['token_count', 'total_price'],
+};
+```
+
+获取、转换接口数据时，`useQuery` 提供的 `select` 回调可以用于处理数据：
+
+```ts
+export const useEchartsData = (
+  params: any,
+  select?: (data: any) => any,
+  onSuccess?: (data: any) => void,
+) => {
+
+  return useQuery({
+    queryKey: ['echartsData', params],
+    queryFn: async () => {
+      const response = await request('/chart', {
+        params,
+      });
+      return response.data;
+    },
+    select,
+    onSuccess,
+  });
+};
+```
+
+`transform` 处理函数示例：
+
+```ts
+const transform = (data: any) => {
+    const targetData = cloneDeep(data);
+
+    Object.keys(EchartKeyMap).forEach((key: string) => {
+        EchartKeyMap[key].forEach((someKey: string) => {
+            // 自定义添加一些图表显示的额外数据
+            targetData[key + '_' + someKey] = 'someValue'
+        })
+    })
+}
+```
+
+## Recap
+
+- 保持数据与样式分离
+- 预定义数据映射，前端前置开发
+- 谨慎处理 `merge` 逻辑，避免引入重复或缺失数据
+

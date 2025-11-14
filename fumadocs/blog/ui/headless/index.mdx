@@ -1,0 +1,160 @@
+---
+title: Think In Headless
+description: "从 Headless 组件设计中理解 UI 与逻辑的分离。"
+author: Marvin
+---
+
+一种快速组装 UI 的模式。
+
+## Comparing In Dev A Closable TodoCard
+
+### 传统流程
+
+- 定义组件 `TodoCard`
+- 实现 UI
+- 注册事件
+- 维护状态
+
+```jsx
+function TodoCard() {
+    return (
+        <div>
+            <div>header</div>
+            <button onClose={() => {}}>X</button>
+            <div>
+                <div>content1</div>
+                <div>content2</div>
+            </div>
+        </div>
+    );
+}
+```
+
+### 无头组件开发流程
+
+初见 Headless 组件时可能会觉得代码冗长，例如 [Headless UI](https://headlessui.com/react/menu)、[shadcn](https://ui.shadcn.com/docs/components/accordion) 或 Radix。
+
+传统方式：预定义样式 + 勾入业务逻辑，进而实现组件。  
+Headless：预定义功能逻辑，使用时再注入样式。后者天然支持主题定制，践行 SoC（最少知道、高内聚、低耦合）。
+
+```tsx
+"use client";
+
+import { createElement } from "react";
+
+export function TodoHeader({
+    children,
+    className,
+    as = "div",
+}: {
+    children: React.ReactNode;
+    className?: string;
+    as?: React.ElementType;
+}) {
+    return createElement(as, { className }, children);
+}
+
+export function TodoCardContainer({
+    children,
+    className,
+    as = "div",
+}: {
+    children: React.ReactNode;
+    className?: string;
+    as?: React.ElementType;
+}) {
+    return createElement(as, { className }, children);
+}
+
+export function TodoCardContent({
+    children,
+    className,
+    as = "div",
+}: {
+    children: React.ReactNode;
+    className?: string;
+    as?: React.ElementType;
+}) {
+    return createElement(as, { className }, children);
+}
+
+/**
+ * 二进制位码说明:
+ * 000 不需要权限也不需要确认
+ * 001 需要确认是否删除
+ * 010 需要权限
+ */
+const CODE = {
+    NOTHING: 0b000,
+    NEED_CONFIRM: 0b001,
+    NEED_AUTH: 0b010,
+} as const;
+
+type CodeType = (typeof CODE)[keyof typeof CODE];
+
+interface TodoCardCloseButtonProps {
+    children: React.ReactNode;
+    className?: string;
+    as?: React.ElementType;
+    codeNumber?: CodeType;
+    onClick?: () => void;
+}
+
+export function TodoCardCloseButton({
+    children,
+    className,
+    as = "button",
+    onClick,
+    codeNumber = CODE.NEED_CONFIRM,
+}: TodoCardCloseButtonProps) {
+    const handleClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (codeNumber & CODE.NEED_AUTH) {
+            alert("需要权限");
+            return;
+        }
+        if (codeNumber & CODE.NEED_CONFIRM) {
+            if (!confirm("需要确认是否删除")) return;
+        }
+        onClick?.();
+    };
+
+    return createElement(as, { className, onClick: handleClick }, children);
+}
+```
+
+使用时自行组合：
+
+```tsx
+<div className="flex gap-4">
+    {todos.map((todo) => (
+        <TodoCardContainer
+            className="border border-green-500 rounded-lg px-2"
+            as="div"
+            key={todo.id}
+        >
+            <TodoHeader className="flex justify-between">
+                <div>{todo.title}</div>
+                <TodoCardCloseButton
+                    className="text-red-500"
+                    onClick={() =>
+                        setTodos(todos.filter((t) => t.id !== todo.id))
+                    }
+                >
+                    close
+                </TodoCardCloseButton>
+            </TodoHeader>
+            <TodoCardContent>
+                <div>{todo.description}</div>
+                <div>{todo.dueDate}</div>
+                <div>{todo.priority}</div>
+            </TodoCardContent>
+        </TodoCardContainer>
+    ))}
+</div>
+```
+
+## Conclude
+
+Headless 组件可以视为“逻辑控制抽象 + UI 由调用方决定”的组合式模式。
+

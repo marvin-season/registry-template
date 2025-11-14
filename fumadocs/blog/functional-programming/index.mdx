@@ -1,0 +1,67 @@
+---
+title: Functional Programming
+description: "以 Currying 与 Compose 为例介绍 JavaScript 中的函数式思维。"
+author: Marvin
+---
+
+> 更新于 2024-01-01。内容基于 Lodash 与 Ramda 实战笔记。
+
+## Currying
+
+Currying 是一种将多参函数转换为一串一参函数的技巧。
+
+**核心：利用高阶函数的特性，按照参数分批调用函数。**
+
+### Currying Function
+
+> 使用 Lodash 提供的 `curry` 包装 `add`，得到 `curriedAdd`。
+
+```js
+import { curry } from "lodash";
+
+const add = (p1, p2, p3) => p1 + p2 + p3;
+
+const curriedAdd = curry(add);
+```
+
+> 传入全部参数，得到最终结果。
+
+```js
+curriedAdd(1, 2, 3); // 6
+curriedAdd(1)(2)(3); // 6
+```
+
+当只传入部分参数时，会返回新的函数：
+
+```js
+const curriedAdd100 = curriedAdd(100);
+curriedAdd100(2, 3); // 105
+```
+
+在所有参数补齐之前，返回的都是函数：
+
+```js
+const curriedAdd105 = curriedAdd100(5);
+curriedAdd105(10); // 115
+```
+
+## Compose
+
+组合函数（Compose）像管道一样，从右到左顺序执行纯函数。
+
+```js
+import * as R from "ramda";
+
+const arr = [{ name: "a" }, { name: "b" }];
+// 使用 compose 将操作拼接起来，最终得到 `A.B`
+
+const func1 = R.compose(
+    R.join("."),
+    R.map(R.compose(R.toUpper, R.prop("name"))),
+);
+
+console.log(func1(arr)); // expected: A.B
+```
+
+> Ramda 大量 API 默认柯里化，便于通过 `compose` 组合出高阶函数。
+
