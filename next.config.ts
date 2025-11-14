@@ -4,6 +4,8 @@ import { createMDX } from 'fumadocs-mdx/next';
 // Use correct check for static build
 const isStatic = process.env.EXPORT_STATIC === "true";
 
+console.debug('isStatic', process.env.EXPORT_STATIC);
+
 const staticOptions: NextConfig = {
   output: "export", // ./out folder will be deployed to GitHub Pages
   images: {
