@@ -1,5 +1,6 @@
 {
     "title": "AI",
-    "description": "围绕智能体、流式对话的实践与设计思考。"
+    "description": "围绕智能体、流式对话的实践与设计思考。",
+    "root": true
 }
 

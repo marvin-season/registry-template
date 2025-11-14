@@ -1,5 +1,6 @@
 {
     "title": "站点部署",
-    "description": "涵盖静态站部署、Nginx 与证书配置的实战记录。"
+    "description": "涵盖静态站部署、Nginx 与证书配置的实战记录。",
+    "root": true
 }
 
