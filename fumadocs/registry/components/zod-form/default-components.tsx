@@ -16,7 +16,6 @@ export type INativeInputProps<T> = Pick<
   'placeholder' | 'disabled' | 'required' | 'className'
 > & {
   onChange?: (value: T) => void;
-  onValidate?: (name: string, value: T) => Promise<boolean>;
   readonly value?: T;
   error?: string;
   label?: string;
@@ -35,7 +34,6 @@ export const NativeInput: FC<INativeInputProps<string | number>> = ({
   onChange,
   name,
   fieldJsonSchema,
-  onValidate,
   isRequired,
   error,
 }) => {
@@ -55,7 +53,6 @@ export const NativeInput: FC<INativeInputProps<string | number>> = ({
         onChange={(e) => {
           const newValue = isNumberInput ? Number(e.target.value) : e.target.value;
           onChange?.(newValue);
-          onValidate?.(name, newValue);
         }}
         className="native-input"
       />

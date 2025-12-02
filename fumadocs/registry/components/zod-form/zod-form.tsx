@@ -46,14 +46,7 @@ export function ZodForm<T extends ZodSchema>(props: ZodFormProps<T>) {
   // 更新字段值
   const updateField = (name: string, value: any) => {
     setFormData((prev: any) => ({ ...prev, [name]: value }));
-    // 清除该字段的错误
-    if (errors[name]) {
-      setErrors((prev) => {
-        const newErrors = { ...prev };
-        delete newErrors[name];
-        return newErrors;
-      });
-    }
+    validateField(name, value);
   };
 
   const errorHandler = useCallback(
@@ -63,17 +56,21 @@ export function ZodForm<T extends ZodSchema>(props: ZodFormProps<T>) {
       bypassCallback?: (data: any) => void;
     }) => {
       const { name, error } = args;
-      const newErrors: Record<string, string> = {};
-      error.issues.forEach((issue) => {
-        const path = name || issue.path.join('.');
-        newErrors[path] = issue.message;
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        console.log('newErrors', newErrors);
+        error.issues.forEach((issue) => {
+          const path = name || issue.path.join('.');
+          newErrors[path] = issue.message;
+        });
+        console.log('newErrors', newErrors);
+        return newErrors;
       });
-      setErrors(newErrors);
     },
     [],
   );
 
-  const onValidate = async (name: string, value: any) => {
+  const validateField = async (name: string, value: any) => {
     const fieldSchema = schema.shape[name as keyof typeof schema.shape];
     if (!fieldSchema) {
       return true;
@@ -81,7 +78,11 @@ export function ZodForm<T extends ZodSchema>(props: ZodFormProps<T>) {
 
     const result = fieldSchema.safeParse(value);
     if (result.success) {
-      setErrors({});
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
     } else {
       errorHandler({ error: result.error, name });
     }
@@ -120,9 +121,8 @@ export function ZodForm<T extends ZodSchema>(props: ZodFormProps<T>) {
           components,
           value: formData[name],
           error: errors[name],
-          updateField,
+          onChange: (value) => updateField(name, value),
           isRequired: jsonSchema.required?.includes(name),
-          onValidate,
           className: fieldClassName,
         };
         return renderFields ? renderFields(props) : <ZodField key={name} {...props} />;
