@@ -9,6 +9,7 @@ function ZodField(props: ZodFieldProps) {
   const { name, component, label, description, ...restProps } = props;
   // 根据类型渲染对应的组件
   const FieldComponent = defaultComponents[component];
+  if (!FieldComponent) return <p className="text-red-500">Component {component} not found</p>;
   return <FieldComponent name={name} label={label || name} description={description} {...restProps} />;
 }
 

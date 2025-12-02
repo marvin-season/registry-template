@@ -6,7 +6,9 @@ import { ZodForm } from './zod-form';
 
 const schema = z.object({
   name: z.string().min(1, '姓名不能为空'),
-  email: z.email('请输入有效的邮箱地址'),
+  email: z.email('请输入有效的邮箱地址').meta({
+    type: 'string', // 类型级别的映射
+  }),
 });
 export const App = () => {
   return (
