@@ -8,7 +8,7 @@ export function PreviewCode(props: { pkgName: string; children: React.ReactNode 
     props;
 
   const files = globSync(
-    `${process.cwd()}/fumadocs/registry/{hooks,blocks,components,utils}/**/${pkgName}/*.{js,ts,tsx}`,
+    `${process.cwd()}/fumadocs/registry/{hooks,blocks,components,utils,libs}/**/${pkgName}/*.{js,ts,tsx}`,
   );
 
   const codes = useMemo(() => {

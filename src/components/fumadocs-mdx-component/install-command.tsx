@@ -3,6 +3,7 @@
 import { DynamicCodeBlock } from 'fumadocs-ui/components/dynamic-codeblock';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { useEffect, useState } from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const isStatic = typeof process !== 'undefined' && process.env.EXPORT_STATIC === 'true';
 
@@ -23,7 +24,12 @@ export function InstallCommand(props: { pkgName: string }) {
   }, []);
 
   if (!domain) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex flex-col items-center gap-4 text-center lg:items-start lg:text-left">
+        <Skeleton className="h-5 w-full" />
+        <Skeleton className="h-5 w-2/3" />
+      </div>
+    );
   }
   return (
     <Tabs items={['pnpm', 'yarn', 'npm']}>

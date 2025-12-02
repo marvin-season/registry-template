@@ -54,6 +54,35 @@
       ]
     },
     {
+      "name": "use-tiptap-param-extractor",
+      "type": "registry:lib",
+      "title": "Use Tiptap Param Extractor",
+      "description": "A extension to extract parameters in tiptap editor from user input.",
+      "dependencies": ["@tiptap/core", "@tiptap/react", "@tiptap/starter-kit"],
+      "files": [
+        {
+          "path": "fumadocs/registry/libs/use-tiptap-param-extractor/index.ts",
+          "type": "registry:lib",
+          "target": "libs/use-tiptap-param-extractor/index.ts"
+        },
+        {
+          "path": "fumadocs/registry/libs/use-tiptap-param-extractor/demo.tsx",
+          "type": "registry:lib",
+          "target": "libs/use-tiptap-param-extractor/demo.tsx"
+        },
+        {
+          "path": "fumadocs/registry/libs/use-tiptap-param-extractor/utils.ts",
+          "type": "registry:lib",
+          "target": "libs/use-tiptap-param-extractor/utils.ts"
+        },
+        {
+          "path": "fumadocs/registry/libs/use-tiptap-param-extractor/view.tsx",
+          "type": "registry:lib",
+          "target": "libs/use-tiptap-param-extractor/view.tsx"
+        }
+      ]
+    },
+    {
       "name": "task",
       "type": "registry:lib",
       "title": "Task Runner",
