@@ -3,8 +3,8 @@
 import type React from 'react';
 import { useCallback, useMemo, useState } from 'react';
 import { z } from 'zod';
-import type { TComponentMap } from './default-components';
-import { ZodField, type ZodFieldProps } from './zod-field';
+import type { IFieldJSONSchema } from './default-components';
+import ZodField from './zod-field';
 
 type ZodSchema = z.ZodObject<Record<string, z.ZodTypeAny>>;
 
@@ -12,25 +12,13 @@ interface ZodFormProps<T extends ZodSchema> {
   schema: T;
   onSubmit: (data: z.infer<T>) => void;
   defaultValues?: Partial<z.infer<T>>;
-  components?: TComponentMap;
   className?: string;
   fieldClassName?: string;
   children?: React.ReactNode;
-
-  renderFields?: (props: ZodFieldProps) => React.ReactNode;
 }
 
 export function ZodForm<T extends ZodSchema>(props: ZodFormProps<T>) {
-  const {
-    schema,
-    onSubmit,
-    defaultValues = {},
-    className = '',
-    components = {},
-    fieldClassName = '',
-    renderFields,
-    children,
-  } = props;
+  const { schema, onSubmit, defaultValues = {}, className = '', fieldClassName = '', children } = props;
 
   // 使用 Zod v4 内置的 JSON Schema 转换
   const jsonSchema = useMemo(() => z.toJSONSchema(schema), [schema]);
@@ -46,7 +34,6 @@ export function ZodForm<T extends ZodSchema>(props: ZodFormProps<T>) {
   // 更新字段值
   const updateField = (name: string, value: any) => {
     setFormData((prev: any) => ({ ...prev, [name]: value }));
-    validateField(name, value);
   };
 
   const errorHandler = useCallback(
@@ -105,27 +92,36 @@ export function ZodForm<T extends ZodSchema>(props: ZodFormProps<T>) {
   };
 
   const handleReset = () => {
-    setFormData(initialFormData);
+    setFormData({ ...initialFormData });
     setErrors({});
   };
 
   const fields = useMemo(() => {
-    return Object.entries(jsonSchema.properties || {});
+    return Object.entries(jsonSchema.properties || {}) as [string, IFieldJSONSchema][];
   }, [jsonSchema]);
   return (
     <form onReset={handleReset} onSubmit={handleSubmit} className={`${className}`}>
       {fields.map(([name, fieldJsonSchema]) => {
-        const props = {
-          name,
-          fieldJsonSchema,
-          components,
-          value: formData[name],
-          error: errors[name],
-          onChange: (value) => updateField(name, value),
-          isRequired: jsonSchema.required?.includes(name),
-          className: fieldClassName,
-        };
-        return renderFields ? renderFields(props) : <ZodField key={name} {...props} />;
+        if (typeof fieldJsonSchema === 'boolean') return null;
+        const component = fieldJsonSchema.component || fieldJsonSchema.type;
+        if (!component) return null;
+
+        const { label, description } = fieldJsonSchema;
+        return (
+          <ZodField
+            component={component}
+            label={label}
+            description={description}
+            key={name}
+            name={name}
+            value={formData[name]}
+            error={errors[name]}
+            onChange={(e) => updateField(name, e.target.value)}
+            onBlur={() => validateField(name, formData[name])}
+            required={jsonSchema.required?.includes(name)}
+            className={fieldClassName}
+          />
+        );
       })}
       {children}
     </form>
