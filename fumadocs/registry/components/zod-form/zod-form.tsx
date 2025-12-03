@@ -103,14 +103,14 @@ export function ZodForm<T extends ZodSchema>(props: ZodFormProps<T>) {
     <form onReset={handleReset} onSubmit={handleSubmit} className={`${className}`}>
       {fields.map(([name, fieldJsonSchema]) => {
         if (typeof fieldJsonSchema === 'boolean') return null;
-        const component = fieldJsonSchema.component || fieldJsonSchema.type;
-        if (!component) return null;
+        const type = fieldJsonSchema.type;
+        if (!type) return null;
 
         const { label, description } = fieldJsonSchema;
         const options = fieldJsonSchema.enum as string[];
         return (
           <ZodField
-            component={component}
+            type={type}
             label={label}
             description={description}
             key={name}

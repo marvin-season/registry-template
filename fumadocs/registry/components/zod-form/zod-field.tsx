@@ -1,16 +1,13 @@
 import { memo } from 'react';
-import type { INativeInputProps } from './default-components';
+import type { IFieldProps } from './default-components';
 import { defaultComponents } from './default-components';
 
-export type ZodFieldProps = INativeInputProps & {
-  component: string;
-};
-function ZodField(props: ZodFieldProps) {
-  const { name, component, label, description, ...restProps } = props;
+function ZodField(props: IFieldProps) {
+  const { name, type, label, description, ...restProps } = props;
   // 根据类型渲染对应的组件
-  const FieldComponent = defaultComponents[component];
-  if (!FieldComponent) return <p className="text-red-500">Component {component} not found</p>;
-  return <FieldComponent name={name} label={label || name} description={description} {...restProps} />;
+  const FieldComponent = defaultComponents[type];
+  if (!FieldComponent) return <p className="text-red-500">{type} not found</p>;
+  return <FieldComponent name={name} type={type} label={label || name} description={description} {...restProps} />;
 }
 
 export default memo(ZodField, (prevProps, nextProps) => {

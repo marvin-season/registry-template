@@ -103,7 +103,6 @@ const schema = z.object({
       type: "string", // 组件类型，用于映射到对应的输入组件
       label: "邮箱地址", // 字段标签，如果不提供则使用字段名
       description: "请输入您的邮箱地址", // 字段描述
-      component: "string", // 指定使用的组件（可选，默认使用 type）
     }),
 });
 ```
@@ -115,7 +114,7 @@ const schema = z.object({
 
 ### ZodField
 
-单个表单字段组件，根据 `component` 类型从 `defaultComponents` 中获取对应的输入组件进行渲染。该组件使用 `React.memo` 进行性能优化，只在 `error` 或 `value` 变化时重新渲染。
+单个表单字段组件，根据 `type` 类型从 `defaultComponents` 中获取对应的输入组件进行渲染。该组件使用 `React.memo` 进行性能优化，只在 `error` 或 `value` 变化时重新渲染。
 
 **注意**：`ZodField` 通常由 `ZodForm` 内部使用，不需要直接使用。如果需要自定义字段渲染，可以通过自定义组件映射来实现。
 
@@ -124,7 +123,6 @@ const schema = z.object({
 | 属性          | 类型                    | 默认值 | 描述                                    |
 | ------------- | ----------------------- | ------ | --------------------------------------- |
 | `name`        | `string`                | -      | **必需**。字段名称                      |
-| `component`   | `string`                 | -      | **必需**。组件类型，用于映射到对应组件  |
 | `label`       | `string`                 | -      | 字段标签，如果不提供则使用 `name`       |
 | `description` | `string`                 | -      | 字段描述                                |
 | `value`       | `any`                    | -      | 字段值                                  |
@@ -140,7 +138,7 @@ const schema = z.object({
 
 | 属性        | 类型     | 描述                                                         |
 | ----------- | -------- | ------------------------------------------------------------ |
-| `component` | `string` | 指定使用的组件类型（可选，默认使用 `type`）                  |
+| `type` | `string` | 指定使用的组件类型（可选，默认使用 `type`）                  |
 | `type`       | `string` | 字段类型，通常会自动推断，用于组件映射（string, number, boolean 等）        |
 | `label`      | `string` | 字段标签，如果不提供则使用字段名                             |
 | `description`| `string` | 字段描述                                                      |
@@ -184,7 +182,7 @@ const customComponents = defineComponents({
 // 在 schema 中使用
 const schema = z.object({
   email: z.string().email().meta({
-    component: "email", // 使用自定义的 email 组件
+    type: "email", // 使用自定义的 email 组件
   }),
 });
 ```
@@ -316,7 +314,7 @@ export type NativeComponent = React.ComponentType<INativeInputProps>;
 
 ```tsx
 export interface IFieldJSONSchema extends z.core.JSONSchema.BaseSchema {
-  component?: string;
+  type?: string;
   label?: string;
 }
 ```

@@ -6,11 +6,9 @@ import { ZodForm } from './zod-form';
 
 const schema = z.object({
   name: z.string().min(1, '姓名不能为空'),
-  email: z.email('请输入有效的邮箱地址').meta({
-    type: 'string', // 类型级别的映射
-  }),
+  email: z.email('请输入有效的邮箱地址'),
   gender: z.enum(['male', 'female']).meta({
-    type: 'radio',
+    type: 'radio', // 类型级别的映射
   }),
 });
 export default function Demo() {

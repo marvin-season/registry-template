@@ -9,7 +9,8 @@ export interface IFieldJSONSchema extends z.core.JSONSchema.BaseSchema {
   label?: string;
 }
 
-export type INativeInputProps = InputHTMLAttributes<HTMLInputElement> & {
+export type IFieldProps = InputHTMLAttributes<HTMLInputElement> & {
+  type: string; // 不同于 input 的 type，用于组件映射
   error?: string;
   label?: string;
   name: string;
@@ -17,25 +18,25 @@ export type INativeInputProps = InputHTMLAttributes<HTMLInputElement> & {
   options?: string[];
 };
 
-export type NativeComponent = React.ComponentType<INativeInputProps>;
+export type NativeComponent = React.ComponentType<IFieldProps>;
 // ============ 默认组件 ============
 
-export const NativeInput: FC<INativeInputProps> = (props) => {
-  const { label, required, name, error, value, ...restProps } = props;
+export const NativeInput: FC<IFieldProps> = (props) => {
+  const { label, required, name, error, value, type: _, ...restProps } = props;
 
   return (
     <div>
       <label htmlFor={name}>
         {label}: {required && <span>*</span>}
       </label>
-      <Input type={'text'} name={name} value={value ?? ''} {...restProps} />
+      <Input type="text" name={name} value={value ?? ''} {...restProps} />
       {error && <p className="text-red-500 text-sm">{error}</p>}
     </div>
   );
 };
 
-export const NativeRadio: FC<INativeInputProps> = (props) => {
-  const { label, required, name, error, value, options = [], ...restProps } = props;
+export const NativeRadio: FC<IFieldProps> = (props) => {
+  const { label, required, name, error, value, options = [], type: _, ...restProps } = props;
   return (
     <div>
       <label htmlFor={name}>
