@@ -107,6 +107,7 @@ export function ZodForm<T extends ZodSchema>(props: ZodFormProps<T>) {
         if (!component) return null;
 
         const { label, description } = fieldJsonSchema;
+        const options = fieldJsonSchema.enum as string[];
         return (
           <ZodField
             component={component}
@@ -114,6 +115,7 @@ export function ZodForm<T extends ZodSchema>(props: ZodFormProps<T>) {
             description={description}
             key={name}
             name={name}
+            options={options}
             value={formData[name]}
             error={errors[name]}
             onChange={(e) => updateField(name, e.target.value)}

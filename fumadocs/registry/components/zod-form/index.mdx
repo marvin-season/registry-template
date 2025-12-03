@@ -4,7 +4,7 @@ author: Marvin
 description: A form component that uses Zod for validation.
 ---
 
-import { App } from "./demo";
+import Demo from "./demo.tsx";
 
 ## Install
 
@@ -13,27 +13,33 @@ import { App } from "./demo";
 ## Preview
 
 <PreviewCode pkgName="zod-form">
-  <App />
+  <Demo />
 </PreviewCode>
 
 ## API Reference
 
 ### ZodForm
 
-主要的表单组件，基于 Zod schema 自动生成表单字段。
+主要的表单组件，基于 Zod schema 自动生成表单字段。组件使用 Zod v4 的 `z.toJSONSchema()` 将 schema 转换为 JSON Schema，然后根据字段类型自动渲染对应的输入组件。
 
 #### Props
 
-| 属性             | 类型                                        | 默认值 | 描述                                              |
-| ---------------- | ------------------------------------------- | ------ | ------------------------------------------------- |
-| `schema`         | `ZodObject<Record<string, ZodTypeAny>>`     | -      | **必需**。Zod schema 对象，定义表单结构和验证规则 |
-| `onSubmit`       | `(data: z.infer<T>) => void`                | -      | **必需**。表单提交时的回调函数                    |
-| `defaultValues`  | `Partial<z.infer<T>>`                       | `{}`   | 表单的默认值                                      |
-| `components`     | `TComponentMap`                             | `{}`   | 自定义组件映射，用于覆盖默认的字段组件            |
-| `className`      | `string`                                    | `""`   | 表单容器的 CSS 类名                               |
-| `fieldClassName` | `string`                                    | `""`   | 字段容器的 CSS 类名                               |
-| `children`       | `React.ReactNode`                           | -      | 表单子元素，通常用于添加提交按钮等                |
-| `renderFields`   | `(props: ZodFieldProps) => React.ReactNode` | -      | 自定义字段渲染函数                                |
+| 属性             | 类型                                    | 默认值 | 描述                                              |
+| ---------------- | --------------------------------------- | ------ | ------------------------------------------------- |
+| `schema`         | `ZodObject<Record<string, ZodTypeAny>>` | -      | **必需**。Zod schema 对象，定义表单结构和验证规则 |
+| `onSubmit`       | `(data: z.infer<T>) => void`            | -      | **必需**。表单提交时的回调函数                    |
+| `defaultValues`  | `Partial<z.infer<T>>`                   | `{}`   | 表单的默认值，会与 schema 中的 `default` 值合并   |
+| `className`      | `string`                                | `""`   | 表单容器的 CSS 类名                               |
+| `fieldClassName` | `string`                                | `""`   | 字段容器的 CSS 类名                               |
+| `children`       | `React.ReactNode`                       | -      | 表单子元素，通常用于添加提交按钮等                |
+
+#### 特性
+
+- **自动字段生成**：根据 Zod schema 自动生成表单字段
+- **实时验证**：字段失焦时自动验证（`onBlur`）
+- **类型安全**：完整的 TypeScript 类型支持
+- **错误处理**：自动显示验证错误信息
+- **表单重置**：支持通过 `type="reset"` 按钮重置表单
 
 #### Example
 
@@ -43,23 +49,23 @@ import {
   ZodFormFooter,
   ZodFormSubmit,
   ZodFormReset,
-} from "@/registry/new-york/blocks/zod-form";
+} from "@/registry/new-york/components/zod-form";
 import { z } from "zod";
 
-const userSchema = z
-  .object({
-    username: z.string().min(3, "用户名至少3个字符"),
-    email: z.string().email("请输入有效邮箱"),
-    password: z.string().min(8, "密码至少8个字符"),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "密码不匹配",
-    path: ["confirmPassword"],
-  });
+const userSchema = z.object({
+  name: z.string().min(1, "姓名不能为空"),
+  email: z
+    .string()
+    .email("请输入有效的邮箱地址")
+    .meta({
+      type: "string", // 指定组件类型
+      label: "邮箱地址", // 字段标签
+      description: "请输入您的邮箱地址", // 字段描述
+    }),
+});
 
 function UserRegistrationForm() {
-  const handleSubmit = (data) => {
+  const handleSubmit = (data: z.infer<typeof userSchema>) => {
     console.log("用户数据:", data);
     // 处理注册逻辑
   };
@@ -69,15 +75,14 @@ function UserRegistrationForm() {
       schema={userSchema}
       onSubmit={handleSubmit}
       defaultValues={{
-        username: "",
+        name: "",
         email: "",
-        password: "",
-        confirmPassword: "",
       }}
-      className="max-w-md mx-auto"
+      className="max-w-md mx-auto space-y-4"
+      fieldClassName="space-y-2"
     >
       <ZodFormFooter>
-        <ZodFormSubmit>注册</ZodFormSubmit>
+        <ZodFormSubmit>提交</ZodFormSubmit>
         <ZodFormReset variant="outline">重置</ZodFormReset>
       </ZodFormFooter>
     </ZodForm>
@@ -85,70 +90,134 @@ function UserRegistrationForm() {
 }
 ```
 
+#### 字段配置
+
+使用 `z.meta()` 可以为字段添加额外的配置信息：
+
+```tsx
+const schema = z.object({
+  email: z
+    .string()
+    .email("请输入有效的邮箱地址")
+    .meta({
+      type: "string", // 组件类型，用于映射到对应的输入组件
+      label: "邮箱地址", // 字段标签，如果不提供则使用字段名
+      description: "请输入您的邮箱地址", // 字段描述
+      component: "string", // 指定使用的组件（可选，默认使用 type）
+    }),
+});
+```
+
+**注意**：
+- `type` 字段用于组件类型映射，当前支持 `string` 类型
+- `label` 如果不提供，会使用字段名作为标签
+- `default` 值可以在 schema 中通过 `z.string().default("默认值")` 设置，或在 `defaultValues` prop 中提供
+
 ### ZodField
 
-A single form field component that renders specific input controls.
+单个表单字段组件，根据 `component` 类型从 `defaultComponents` 中获取对应的输入组件进行渲染。该组件使用 `React.memo` 进行性能优化，只在 `error` 或 `value` 变化时重新渲染。
+
+**注意**：`ZodField` 通常由 `ZodForm` 内部使用，不需要直接使用。如果需要自定义字段渲染，可以通过自定义组件映射来实现。
 
 #### Props
 
-| Property          | Type                                             | Default | Description                                              |
-| ----------------- | ------------------------------------------------ | ------- | -------------------------------------------------------- |
-| `name`            | `string`                                         | -       | **Required**. The name of the field                      |
-| `fieldJsonSchema` | `TFieldJSONSchema`                               | -       | **Required**. The JSON Schema configuration of the field |
-| `components`      | `TComponentMap`                                  | -       | **Required**. The component mapping                      |
-| `value`           | `any`                                            | -       | The value of the field                                   |
-| `error`           | `string`                                         | -       | The error message of the field                           |
-| `isRequired`      | `boolean`                                        | `false` | Whether the field is required                            |
-| `updateField`     | `(name: string, value: any) => void`             | -       | **Required**. The function to update the field value     |
-| `onValidate`      | `(name: string, value: any) => Promise<boolean>` | -       | **Required**. The function to validate the field         |
-| `className`       | `string`                                         | -       | The CSS class name of the field container                |
+| 属性          | 类型                    | 默认值 | 描述                                    |
+| ------------- | ----------------------- | ------ | --------------------------------------- |
+| `name`        | `string`                | -      | **必需**。字段名称                      |
+| `component`   | `string`                 | -      | **必需**。组件类型，用于映射到对应组件  |
+| `label`       | `string`                 | -      | 字段标签，如果不提供则使用 `name`       |
+| `description` | `string`                 | -      | 字段描述                                |
+| `value`       | `any`                    | -      | 字段值                                  |
+| `error`       | `string`                 | -      | 错误信息                                |
+| `required`    | `boolean`                | -      | 是否为必填字段                          |
+| `onChange`    | `React.ChangeEventHandler` | -      | 值变化时的回调函数                      |
+| `onBlur`      | `React.FocusEventHandler` | -      | 失焦时的回调函数，通常用于触发验证      |
+| `className`   | `string`                 | -      | 字段容器的 CSS 类名                     |
 
-| 属性              | 类型                                             | 默认值  | 描述                              |
-| ----------------- | ------------------------------------------------ | ------- | --------------------------------- |
-| `name`            | `string`                                         | -       | **必需**。字段名称                |
-| `fieldJsonSchema` | `TFieldJSONSchema`                               | -       | **必需**。字段的 JSON Schema 配置 |
-| `components`      | `TComponentMap`                                  | -       | **必需**。组件映射                |
-| `value`           | `any`                                            | -       | 字段值                            |
-| `error`           | `string`                                         | -       | 错误信息                          |
-| `isRequired`      | `boolean`                                        | `false` | 是否为必填字段                    |
-| `updateField`     | `(name: string, value: any) => void`             | -       | **必需**。更新字段值的函数        |
-| `onValidate`      | `(name: string, value: any) => Promise<boolean>` | -       | **必需**。字段验证函数            |
-| `className`       | `string`                                         | -       | 字段容器的 CSS 类名               |
+#### 字段配置 (IFieldJSONSchema)
 
-#### 字段配置 (TFieldJSONSchema)
+通过 `z.meta()` 可以配置以下字段属性：
 
-| 属性          | 类型     | 描述                                  |
-| ------------- | -------- | ------------------------------------- |
-| `component`   | `string` | 指定使用的组件类型                    |
-| `type`        | `string` | 字段类型 (string, number, boolean 等) |
-| `label`       | `string` | 字段标签                              |
-| `description` | `string` | 字段描述                              |
-| `placeholder` | `string` | 占位符文本                            |
-| `default`     | `any`    | 默认值                                |
+| 属性        | 类型     | 描述                                                         |
+| ----------- | -------- | ------------------------------------------------------------ |
+| `component` | `string` | 指定使用的组件类型（可选，默认使用 `type`）                  |
+| `type`       | `string` | 字段类型，通常会自动推断，用于组件映射（string, number, boolean 等）        |
+| `label`      | `string` | 字段标签，如果不提供则使用字段名                             |
+| `description`| `string` | 字段描述                                                      |
+| `default`    | `any`    | 默认值，也可以通过 `z.string().default("值")` 设置           |
+
+### 自定义组件
+
+#### defineComponents
+
+使用 `defineComponents` 函数可以定义自定义的组件映射，用于覆盖或扩展默认组件。
+
+```tsx
+import { defineComponents, NativeInput, type NativeComponent } from "@/registry/new-york/components/zod-form";
+
+// 自定义邮箱输入组件
+const EmailInput: NativeComponent = (props) => {
+  const { label, required, name, error, value, ...restProps } = props;
+  return (
+    <div>
+      <label htmlFor={name}>
+        {label}: {required && <span>*</span>}
+      </label>
+      <Input 
+        type="email" 
+        name={name} 
+        value={value ?? ''} 
+        placeholder="example@email.com"
+        {...restProps} 
+      />
+      {error && <p className="text-red-500 text-sm">{error}</p>}
+    </div>
+  );
+};
+
+// 定义组件映射
+const customComponents = defineComponents({
+  string: NativeInput, // 默认字符串输入
+  email: EmailInput,   // 自定义邮箱输入
+});
+
+// 在 schema 中使用
+const schema = z.object({
+  email: z.string().email().meta({
+    component: "email", // 使用自定义的 email 组件
+  }),
+});
+```
+
+**注意**：当前版本的 `ZodForm` 组件内部使用 `defaultComponents`，自定义组件映射功能需要在组件内部实现支持。如需使用自定义组件，建议直接修改 `default-components.tsx` 文件。
 
 ### Helper Components
 
 #### ZodFormSubmit
 
-表单提交按钮组件。
+表单提交按钮组件，基于 `Button` 组件，自动设置 `type="submit"`。
 
 ```tsx
 <ZodFormSubmit>提交</ZodFormSubmit>
 <ZodFormSubmit variant="destructive" size="lg">删除</ZodFormSubmit>
 ```
 
+支持所有 `Button` 组件的 props。
+
 #### ZodFormReset
 
-表单重置按钮组件。
+表单重置按钮组件，基于 `Button` 组件，自动设置 `type="reset"`。
 
 ```tsx
 <ZodFormReset>重置</ZodFormReset>
 <ZodFormReset variant="outline">清空</ZodFormReset>
 ```
 
+支持所有 `Button` 组件的 props。点击重置按钮会将表单数据重置为 `defaultValues` 或 schema 中定义的默认值。
+
 #### ZodFormFooter
 
-表单底部容器组件，用于包装提交和重置按钮。
+表单底部容器组件，用于包装提交和重置按钮。默认使用 `flex justify-end gap-2` 样式。
 
 ```tsx
 <ZodFormFooter className="flex justify-between">
@@ -156,3 +225,126 @@ A single form field component that renders specific input controls.
   <ZodFormSubmit>提交</ZodFormSubmit>
 </ZodFormFooter>
 ```
+
+### 高级用法
+
+#### 表单验证
+
+表单支持两种验证方式：
+
+1. **字段级验证**：字段失焦时（`onBlur`）自动验证单个字段
+2. **表单级验证**：提交时验证整个表单
+
+```tsx
+const schema = z.object({
+  username: z.string().min(3, "用户名至少3个字符"),
+  email: z.string().email("请输入有效邮箱"),
+});
+
+// 字段失焦时会自动验证
+// 提交时会验证整个表单，如果有错误会显示所有错误信息
+```
+
+#### 复杂验证规则
+
+使用 Zod 的 `refine` 或 `superRefine` 可以实现复杂的验证逻辑：
+
+```tsx
+const schema = z
+  .object({
+    password: z.string().min(8, "密码至少8个字符"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "密码不匹配",
+    path: ["confirmPassword"], // 错误信息会显示在 confirmPassword 字段
+  });
+```
+
+#### 默认值设置
+
+可以通过两种方式设置默认值：
+
+1. **在 schema 中设置**：
+```tsx
+const schema = z.object({
+  name: z.string().default("默认名称"),
+  age: z.number().default(18),
+});
+```
+
+2. **通过 defaultValues prop**：
+```tsx
+<ZodForm
+  schema={schema}
+  onSubmit={handleSubmit}
+  defaultValues={{
+    name: "自定义名称",
+    age: 20,
+  }}
+/>
+```
+
+`defaultValues` 会覆盖 schema 中的默认值。
+
+### 类型定义
+
+#### INativeInputProps
+
+自定义输入组件需要实现的 props 接口：
+
+```tsx
+export type INativeInputProps = InputHTMLAttributes<HTMLInputElement> & {
+  error?: string;
+  label?: string;
+  name: string;
+  description?: string;
+};
+```
+
+#### NativeComponent
+
+自定义组件的类型定义：
+
+```tsx
+export type NativeComponent = React.ComponentType<INativeInputProps>;
+```
+
+#### IFieldJSONSchema
+
+字段的 JSON Schema 配置接口，扩展了 Zod 的 `BaseSchema`：
+
+```tsx
+export interface IFieldJSONSchema extends z.core.JSONSchema.BaseSchema {
+  component?: string;
+  label?: string;
+}
+```
+
+### 常见问题
+
+#### 1. 为什么 reset 后输入框的值没有清空？
+
+确保在组件中正确处理 `undefined` 值。受控组件需要将 `undefined` 转换为空字符串：
+
+```tsx
+<Input value={value ?? ''} />
+```
+
+#### 2. 如何自定义字段的样式？
+
+可以通过 `fieldClassName` prop 为所有字段添加统一的样式，或者通过自定义组件来实现特定字段的样式。
+
+#### 3. 如何实现异步验证？
+
+当前版本支持同步验证。如需异步验证，可以在 `onSubmit` 回调中进行异步操作，或修改 `validateField` 函数以支持异步验证。
+
+#### 4. 如何禁用某些字段？
+
+可以通过自定义组件来实现禁用功能，或者在 schema 中使用条件验证来控制字段的可用性。
+
+#### 5. 支持哪些字段类型？
+
+当前版本主要支持 `string` 类型。
+
+可以通过扩展 `default-components.tsx` 文件中的 `defaultComponents` 来支持更多类型（如 `number`、`boolean`、`date` 等）。

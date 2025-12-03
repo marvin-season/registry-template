@@ -14,6 +14,7 @@ export type INativeInputProps = InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
   name: string;
   description?: string;
+  options?: string[];
 };
 
 export type NativeComponent = React.ComponentType<INativeInputProps>;
@@ -33,6 +34,33 @@ export const NativeInput: FC<INativeInputProps> = (props) => {
   );
 };
 
+export const NativeRadio: FC<INativeInputProps> = (props) => {
+  const { label, required, name, error, value, options = [], ...restProps } = props;
+  return (
+    <div>
+      <label htmlFor={name}>
+        {label}: {required && <span>*</span>}
+      </label>
+      <div className="flex items-center gap-4">
+        {options?.map((option) => (
+          <div key={option} className="flex items-center gap-1">
+            <input
+              type="radio"
+              id={`${name}_${option}`}
+              name={name}
+              value={option}
+              checked={value === option}
+              {...restProps}
+            />
+            <label htmlFor={`${name}_${option}`}>{option}</label>
+          </div>
+        ))}
+      </div>
+      {error && <p className="text-red-500 text-sm">{error}</p>}
+    </div>
+  );
+};
+
 export type TComponentType = 'string' | 'checkbox' | 'radio' | 'select';
 
 export type TComponentMap = Record<string, NativeComponent> & Partial<Record<TComponentType, NativeComponent>>;
@@ -44,6 +72,7 @@ export function defineComponents(components: TComponentMap) {
 export const defaultComponents = defineComponents({
   // 类型级别的映射
   string: NativeInput,
+  radio: NativeRadio,
 });
 
 export type ButtonProps = React.ComponentProps<typeof Button>;

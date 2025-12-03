@@ -9,16 +9,21 @@ const schema = z.object({
   email: z.email('请输入有效的邮箱地址').meta({
     type: 'string', // 类型级别的映射
   }),
+  gender: z.enum(['male', 'female']).meta({
+    type: 'radio',
+  }),
 });
-export const App = () => {
+export default function Demo() {
   return (
-    <div>
-      <ZodForm schema={schema} onSubmit={(data) => console.log('data', data)}>
-        <ZodFormFooter>
-          <ZodFormSubmit>Submit</ZodFormSubmit>
-          <ZodFormReset variant={'destructive'}>Reset</ZodFormReset>
-        </ZodFormFooter>
-      </ZodForm>
-    </div>
+    <ZodForm
+      schema={schema}
+      defaultValues={{ name: 'John Doe', email: 'john.doe@example.com', gender: 'male' }}
+      onSubmit={(data) => console.log('data', data)}
+    >
+      <ZodFormFooter>
+        <ZodFormSubmit>Submit</ZodFormSubmit>
+        <ZodFormReset variant={'destructive'}>Reset</ZodFormReset>
+      </ZodFormFooter>
+    </ZodForm>
   );
-};
+}
