@@ -1,8 +1,13 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { z } from 'zod';
 import { ZodFormFooter, ZodFormReset, ZodFormSubmit } from './default-components';
-import { ZodForm } from './zod-form';
+
+const ZodForm = dynamic(() => import('./zod-form').then((mod) => mod.ZodForm), {
+  ssr: false,
+  loading: () => <div>Loading ZodForm...</div>,
+});
 
 const schema = z.object({
   name: z.string().min(1, '姓名不能为空'),
