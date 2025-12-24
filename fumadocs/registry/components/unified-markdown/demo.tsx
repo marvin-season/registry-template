@@ -78,7 +78,7 @@ export default function Demo() {
 
   const handleReset = () => {
     clearInterval(interval.current);
-      setContent(c);
+    setContent("");
   };
 
   return (
