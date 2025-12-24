@@ -119,18 +119,7 @@
         }
       ]
     },
-    {
-      "name": "hello-world",
-      "type": "registry:component",
-      "title": "Hello World",
-      "description": "A simple hello world component",
-      "files": [
-        {
-          "path": "fumadocs/registry/blocks/hello-world/hello-world.tsx",
-          "type": "registry:component"
-        }
-      ]
-    },
+
     {
       "name": "children",
       "type": "registry:component",
@@ -143,68 +132,7 @@
         }
       ]
     },
-    {
-      "name": "lazy-block",
-      "type": "registry:component",
-      "title": "Lazy Block",
-      "description": "A block component that lazily renders its children when it enters the viewport.",
-      "files": [
-        {
-          "path": "fumadocs/registry/blocks/lazy-block/lazy-block.tsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "fumadocs/registry/hooks/use-intersection-observer/index.ts",
-          "type": "registry:hook"
-        }
-      ]
-    },
-    {
-      "name": "complex-component",
-      "type": "registry:component",
-      "title": "Complex Component",
-      "description": "A complex component showing hooks, libs and components.",
-      "registryDependencies": ["card"],
-      "files": [
-        {
-          "path": "fumadocs/registry/blocks/complex-component/page.tsx",
-          "type": "registry:page",
-          "target": "app/pokemon/page.tsx"
-        },
-        {
-          "path": "fumadocs/registry/blocks/complex-component/components/pokemon-card.tsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "fumadocs/registry/blocks/complex-component/components/pokemon-image.tsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "fumadocs/registry/blocks/complex-component/lib/pokemon.ts",
-          "type": "registry:lib"
-        },
-        {
-          "path": "fumadocs/registry/blocks/complex-component/hooks/use-pokemon.ts",
-          "type": "registry:hook"
-        }
-      ]
-    },
-    {
-      "name": "example-with-css",
-      "type": "registry:component",
-      "title": "Example with CSS",
-      "description": "A login form with a CSS file.",
-      "files": [
-        {
-          "path": "fumadocs/registry/blocks/example-with-css/example-card.tsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "fumadocs/registry/blocks/example-with-css/example-card.css",
-          "type": "registry:component"
-        }
-      ]
-    },
+    
     {
       "name": "zod-form",
       "type": "registry:component",
@@ -227,6 +155,45 @@
           "path": "fumadocs/registry/components/zod-form/default-components.tsx",
           "type": "registry:component",
           "target": "components/zod-form/default-components.tsx"
+        }
+      ]
+    },
+    {
+      "name": "unified-markdown",
+      "type": "registry:component",
+      "title": "Unified Markdown",
+      "description": "A markdown component that uses unified for parsing and rendering.",
+      "dependencies": ["rehype-highlight", "rehype-katex", "rehype-react", "remark-gfm", "remark-math", "remark-parse", "remark-rehype", "unified", "unist-util-visit"],
+      "files": [
+        {
+          "path": "fumadocs/registry/components/unified-markdown/index.tsx",
+          "type": "registry:component",
+          "target": "components/unified-markdown/index.tsx"
+        },
+        {
+          "path": "fumadocs/registry/components/unified-markdown/demo.tsx",
+          "type": "registry:component",
+          "target": "components/unified-markdown/demo.tsx"
+        },
+        {
+          "path": "fumadocs/registry/components/unified-markdown/processor.ts",
+          "type": "registry:component",
+          "target": "components/unified-markdown/processor.ts"
+        },
+        {
+          "path": "fumadocs/registry/components/unified-markdown/use-incremental-markdown.tsx",
+          "type": "registry:component",
+          "target": "components/unified-markdown/use-incremental-markdown.tsx"
+        },
+        {
+          "path": "fumadocs/registry/components/unified-markdown/use-visibility.ts",
+          "type": "registry:component",
+          "target": "components/unified-markdown/use-visibility.ts"
+        },
+        {
+          "path": "fumadocs/registry/components/unified-markdown/components.tsx",
+          "type": "registry:component",
+          "target": "components/unified-markdown/components.tsx"
         }
       ]
     }
