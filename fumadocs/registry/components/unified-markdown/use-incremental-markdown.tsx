@@ -42,10 +42,12 @@ export interface IncrementalMarkdownOptions {
    * @default false
    */
   pauseOnBackground?: boolean;
+
+  hasNextChunk?: boolean;
 }
 
 export function useIncrementalMarkdown(content: string, options: IncrementalMarkdownOptions = {}) {
-  const { pauseOnBackground = false } = options;
+  const { pauseOnBackground = false, hasNextChunk = false } = options;
   const isVisible = useIsVisible();
 
   const lastSplitPointRef = useRef<number>(-1);
@@ -59,7 +61,7 @@ export function useIncrementalMarkdown(content: string, options: IncrementalMark
       return lastResultRef.current;
     }
 
-    const splitPoint = findSafeSplitPoint(content);
+    const splitPoint = !hasNextChunk ? content.length : findSafeSplitPoint(content);
 
     if (splitPoint !== lastSplitPointRef.current) {
       lastSplitPointRef.current = splitPoint;
@@ -81,5 +83,5 @@ export function useIncrementalMarkdown(content: string, options: IncrementalMark
 
     lastResultRef.current = result;
     return result;
-  }, [content, isVisible, pauseOnBackground]);
+  }, [content, isVisible, hasNextChunk, pauseOnBackground]);
 }

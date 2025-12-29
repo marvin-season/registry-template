@@ -4,7 +4,7 @@ import {  useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { UnifiedMarkdown } from './index';
 
-const c = `
+const longContent = `
 # About This Project
 
 Welcome to **MyAI Portal** 
@@ -54,23 +54,33 @@ $$
 
 
 
+😊
+`;
 
+const shortContent = `
+Welcome to 😊 **MyAI Portal** 
+
+I'm a chatbot that can answer your questions and help you with your tasks. 😊
 `;
 
 export default function Demo() {
   const [content, setContent] = useState<string>('');
   const interval = useRef<any>(null);
-
+  const [hasNextChunk, setHasNextChunk] = useState(false);
+  const [useLongContent, setUseLongContent] = useState(false);
 
   const handleStart = () => {
     let i = 0;
+    setHasNextChunk(true);
+    const c = useLongContent ? longContent : shortContent;
     interval.current = setInterval(() => {
-      const char = c.at(i);
-      if (char) {
-        setContent((prev) => prev + char);
-      } else {
+      if(i >= c.length) {
+        setHasNextChunk(false);
         clearInterval(interval.current);
+        return;
       }
+      const char = c.at(i);
+      setContent((prev) => prev + char);
       i += 1;
     }, 40);
 
@@ -86,8 +96,9 @@ export default function Demo() {
       <div className="flex gap-4">
         <Button onClick={handleStart}>Start</Button>
         <Button onClick={handleReset}>Reset</Button>
+        <Button variant={'secondary'} onClick={() => setUseLongContent(!useLongContent)}>Switch {useLongContent ? 'short' : 'long'}</Button>
       </div>
-      <UnifiedMarkdown className="flex-1" content={content} />
+      <UnifiedMarkdown className="flex-1" content={content} hasNextChunk={hasNextChunk}/>
     </div>
   );
 }
