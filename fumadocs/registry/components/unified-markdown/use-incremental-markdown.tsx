@@ -47,7 +47,6 @@ export function useIncrementalMarkdown(content: string, options: IncrementalMark
 
   const lastSplitPointRef = useRef<number>(-1);
   const cachedStableResult = useRef<ReactNode>([]);
-  const lastResultRef = useRef<ReactNode>(null);
 
   return useMemo(() => {
     const splitPoint = !hasNextChunk ? content.length : findSafeSplitPoint(content);
@@ -59,7 +58,7 @@ export function useIncrementalMarkdown(content: string, options: IncrementalMark
 
     const tailContent = splitPoint === -1 ? content : content.slice(splitPoint);
 
-    const tail = processor.processSync(tailContent).result as ReactNode;
+    const tail = tailContent ? (processor.processSync(tailContent).result as ReactNode) : undefined;
 
     const result = (
       <Fragment key="incremental-markdown-root">
@@ -68,7 +67,6 @@ export function useIncrementalMarkdown(content: string, options: IncrementalMark
       </Fragment>
     );
 
-    lastResultRef.current = result;
     return result;
   }, [content, hasNextChunk]);
 }
