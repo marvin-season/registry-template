@@ -8,16 +8,13 @@ import 'highlight.js/styles/github-dark.css';
 export function UnifiedMarkdown({
   content,
   className,
-  pauseOnBackground = false,
   hasNextChunk = false,
 }: {
   content: string;
   className?: string;
-  pauseOnBackground?: boolean;
   hasNextChunk?: boolean;
 }) {
   const contentComponent = useIncrementalMarkdown(content, {
-    pauseOnBackground,
     hasNextChunk,
   });
 

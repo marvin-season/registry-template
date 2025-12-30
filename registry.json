@@ -186,11 +186,6 @@
           "target": "components/unified-markdown/use-incremental-markdown.tsx"
         },
         {
-          "path": "fumadocs/registry/components/unified-markdown/use-visibility.ts",
-          "type": "registry:component",
-          "target": "components/unified-markdown/use-visibility.ts"
-        },
-        {
           "path": "fumadocs/registry/components/unified-markdown/components.tsx",
           "type": "registry:component",
           "target": "components/unified-markdown/components.tsx"
