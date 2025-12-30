@@ -1,0 +1,17 @@
+---
+title: Treeshaking
+description: "Treeshaking 是一种优化手段，用于减少代码体积。"
+author: Marvin
+---
+
+Treeshaking 的原理是避免打包未使用的代码，从而减少代码体积。
+但是存在一些导致 Treeshaking 失效的情况，例如：
+
+- 桶文件（Bundle）：将多个文件打包成一个文件，导致未使用的代码被打包进来。
+
+```js
+// index.ts
+export * from 'xxx' // 会导致 xxx 被打包进来, 引用 index.ts 时， 即使不使用 xxx，也会被打包进来
+export * from 'yyy'
+```
+
