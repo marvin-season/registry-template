@@ -28,7 +28,7 @@ export async function* SSEMessageGenerator(stream: ReadableStream<string | Array
         break;
       }
 
-      const sse_chunk = value instanceof ArrayBuffer ? textDecoder.decode(value) : value;
+      const sse_chunk = typeof value === 'string' ? value : textDecoder.decode(value);
       for (const line of sse_chunk.split(/\n+/)) {
         const json_str = line.replace(/data:\s*/, '').trim();
         if (json_str.length > 0) {
