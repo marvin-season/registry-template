@@ -40,6 +40,20 @@
       ]
     },
     {
+      "name": "response",
+      "type": "registry:lib",
+      "title": "Response",
+      "description": "A library to mock response",
+      "registryDependencies": ["common"],
+      "files": [
+        {
+          "path": "fumadocs/registry/utils/response/index.ts",
+          "type": "registry:lib",
+          "target": "lib/response/index.ts"
+        }
+      ]
+    },
+    {
       "name": "stream",
       "type": "registry:lib",
       "title": "Stream",
