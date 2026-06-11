@@ -4,6 +4,10 @@
   #nd-sidebar {
     background-color: var(--background);
     box-shadow: none;
+    transition:
+      background-color 0.25s ease,
+      border-color 0.25s ease,
+      transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   #nd-sidebar[data-collapsed='true'][data-hovered='true'] {
@@ -13,6 +17,15 @@
   #nd-subnav {
     backdrop-filter: none;
     background-color: var(--background);
+    transition: background-color 0.25s ease, border-color 0.25s ease;
+  }
+
+  #nd-sidebar a,
+  #nd-sidebar button {
+    transition:
+      color 0.15s ease,
+      background-color 0.15s ease,
+      opacity 0.15s ease;
   }
 
   #nd-docs-layout {

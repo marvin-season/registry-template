@@ -44,7 +44,7 @@ export function PreviewCode(props: { pkgName: string; children: React.ReactNode 
   }, [codes, codeTitles]);
 
   return (
-    <Tabs items={['Preview', 'Source Code']}>
+    <Tabs items={['Preview', 'Source Code']} className="animate-fade-in-soft">
       <Tab>{children}</Tab>
       <Tab className="p-0">{sourceCodeTabs}</Tab>
     </Tabs>

@@ -32,7 +32,7 @@ export function InstallCommand(props: { pkgName: string }) {
     );
   }
   return (
-    <Tabs items={['pnpm', 'yarn', 'npm']}>
+    <Tabs items={['pnpm', 'yarn', 'npm']} className="animate-fade-in-soft">
       <Tab>
         <DynamicCodeBlock lang="bash" code={withPNPMCommand} />
       </Tab>

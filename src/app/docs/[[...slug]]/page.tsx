@@ -24,7 +24,7 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
         <Link
           href={githubUrl}
           target="_blank"
-          className=" hover:-translate-y-px transition-all duration-300"
+          className="transition-paper hover:-translate-y-px"
           title="View on GitHub"
         >
           <DocsTitle>{page.data.title}</DocsTitle>

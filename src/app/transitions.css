@@ -1,0 +1,70 @@
+@theme {
+  --animate-page-enter: page-enter 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-fade-up: fade-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-fade-in-soft: fade-in-soft 0.3s ease both;
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-soft {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@layer utilities {
+  .motion-delay-75 {
+    animation-delay: 75ms;
+  }
+
+  .motion-delay-150 {
+    animation-delay: 150ms;
+  }
+
+  .motion-delay-225 {
+    animation-delay: 225ms;
+  }
+
+  .transition-paper {
+    transition-property: color, background-color, border-color, opacity, transform, box-shadow;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-page-enter,
+  .animate-fade-up,
+  .animate-fade-in-soft {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .transition-paper {
+    transition: none;
+  }
+}
