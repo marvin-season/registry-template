@@ -1,0 +1,30 @@
+/* Paper theme — flat chrome, border-only separation */
+
+@layer base {
+  #nd-sidebar {
+    background-color: var(--background);
+    box-shadow: none;
+  }
+
+  #nd-sidebar[data-collapsed='true'][data-hovered='true'] {
+    box-shadow: none;
+  }
+
+  #nd-subnav {
+    backdrop-filter: none;
+    background-color: var(--background);
+  }
+
+  #nd-docs-layout {
+    --fd-layout-width: 72rem;
+  }
+
+  .prose {
+    --tw-prose-body: var(--foreground);
+    --tw-prose-headings: var(--foreground);
+    --tw-prose-links: var(--primary);
+    --tw-prose-bold: var(--foreground);
+    --tw-prose-quotes: var(--muted-foreground);
+    --tw-prose-code: var(--foreground);
+  }
+}
