@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { DM_Sans, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
+import { LocatorRuntime } from '@/components/locator-runtime';
 import { RootProvider } from 'fumadocs-ui/provider/next';
 
 const fontSans = DM_Sans({
@@ -30,6 +31,7 @@ export default function RootLayout({
       <body
         className={`${fontSans.variable} ${fontMono.variable} antialiased flex flex-col min-h-screen`}
       >
+        <LocatorRuntime />
         <RootProvider>{children}</RootProvider>
       </body>
     </html>
